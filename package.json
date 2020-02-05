@@ -1,0 +1,10 @@
+{
+  "name": "homework-web",
+  "version": "0.1.1",
+  "dependencies": {
+    
+  },
+  "devDependencies": {
+    "storybook": "^5.3.12"
+  }
+}
