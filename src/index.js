@@ -1,8 +1,9 @@
 import * as settings from "./settings.json";
-import {Scene, PerspectiveCamera, BoxGeometry, MeshNormalMaterial, Mesh, WebGLRenderer} from "three";
+import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 // Create scene
-const scene = new Scene();
+const scene = new THREE.Scene();
 
 const cameraSettings = settings.camera;
 if (cameraSettings["aspect-ratio-use-window"] === true) {
@@ -10,16 +11,16 @@ if (cameraSettings["aspect-ratio-use-window"] === true) {
 }
 
 // Create camera
-const camera = new PerspectiveCamera(
+const camera = new THREE.PerspectiveCamera(
     cameraSettings["field-of-view"], // fov — Camera frustum vertical field of view.
     cameraSettings["aspect-ratio"], // aspect — Camera frustum aspect ratio.
     cameraSettings["plane-near"], // near — Camera frustum near plane.
     cameraSettings["plane-far"]  // far — Camera frustum far plane.
 );
 
-const geometry = new BoxGeometry(1, 1, 1);
-const material = new MeshNormalMaterial();
-const cube = new Mesh(geometry, material);
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshNormalMaterial();
+const cube = new THREE.Mesh(geometry, material);
 
 scene.add(cube);
 
@@ -28,13 +29,45 @@ camera.position.y = 1;
 camera.position.z = 5;
 
 // Create renderer
-const renderer = new WebGLRenderer({antialias: true, alpha: true});
+const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 renderer.render(scene, camera);
 
 let cameraAcceleration = {x: 0, y: 0, z: 0};
 
+// Instantiate a loader
+var loader = new GLTFLoader();
+
+// Load a glTF resource
+loader.load(
+	// resource URL
+	'./src/scene.gltf',
+	// called when the resource is loaded
+	function ( gltf ) {
+
+		scene.add( gltf.scene );
+
+		gltf.animations; // Array<THREE.AnimationClip>
+		gltf.scene; // THREE.Scene
+		gltf.scenes; // Array<THREE.Scene>
+		gltf.cameras; // Array<THREE.Camera>
+		gltf.asset; // Object
+
+	},
+	// called while loading is progressing
+	function ( xhr ) {
+
+		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+	},
+	// called when loading has errors
+	function ( error ) {
+
+		console.log( 'An error happened' );
+
+	}
+);
 
 const keyDownListener = (e) => {
     if (e.code === "KeyA") cameraAcceleration.x = -.2;
