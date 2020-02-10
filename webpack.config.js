@@ -4,7 +4,7 @@ const ROOT = __dirname;
 const SRC = path.join(ROOT, 'src');
 
 const output = path.join(ROOT, './dist');
-const entryPath = path.join(SRC, 'app.ts');
+const entryPath = path.join(SRC, 'index.js');
 
 module.exports = {
     target: 'node',

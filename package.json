@@ -1,11 +1,15 @@
 {
   "name": "homework-web",
   "version": "0.1.1",
+  "scripts": {
+    "build": "webpack --mode=development --watch"
+  },
   "dependencies": {},
   "devDependencies": {
+    "babel-loader": "^8.0.6",
     "storybook": "^5.3.12",
     "three": "^0.113.2",
     "webpack": "^4.41.5",
-    "babel-loader": "^8.0.6"
+    "webpack-cli": "^3.3.10"
   }
 }
