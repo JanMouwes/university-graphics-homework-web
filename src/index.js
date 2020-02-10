@@ -6,7 +6,7 @@ const scene = new THREE.Scene();
 
 const cameraSettings = settings.camera;
 if (cameraSettings["aspect-ratio-use-window"] === true) {
-    cameraSettings["aspect-ratio"] = window.innerWidth/window.innerHeight;
+    cameraSettings["aspect-ratio"] = window.innerWidth / window.innerHeight;
 }
 
 // Create camera
@@ -17,9 +17,9 @@ const camera = new THREE.PerspectiveCamera(
     cameraSettings["plane-far"]  // far — Camera frustum far plane.
 );
 
-const geometry  = new THREE.BoxGeometry(1, 1, 1);
+const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshNormalMaterial();
-const cube  = new THREE.Mesh(geometry, material);
+const cube = new THREE.Mesh(geometry, material);
 
 scene.add(cube);
 
@@ -50,11 +50,11 @@ const decay = () => {
 };
 
 let onUpdate;
-document.addEventListener('keydown',(e)=>{
+document.addEventListener('keydown', (e) => {
     keyDownListener(e);
     onUpdate = null;
 });
-document.addEventListener('keyup',()=> (onUpdate = decay));
+document.addEventListener('keyup', () => (onUpdate = decay));
 
 const update = (deltaTime) => {
     if (onUpdate) {
