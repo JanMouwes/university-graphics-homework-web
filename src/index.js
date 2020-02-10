@@ -1,5 +1,6 @@
 import * as settings from "./settings.json";
 import {Scene, PerspectiveCamera, BoxGeometry, MeshNormalMaterial, Mesh, WebGLRenderer} from "three";
+import MovementControls from "./movement";
 
 // Create scene
 const scene = new Scene();
@@ -33,37 +34,11 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 renderer.render(scene, camera);
 
-let cameraAcceleration = {x: 0, y: 0, z: 0};
-
-
-const keyDownListener = (e) => {
-    if (e.code === "KeyA") cameraAcceleration.x = -.2;
-    else if (e.code === "KeyD") cameraAcceleration.x = .2;
-    else if (e.code === "KeyW") cameraAcceleration.y = -.2;
-    else if (e.code === "KeyS") cameraAcceleration.y = .2;
-};
-
-const decay = () => {
-    cameraAcceleration.x *= .9;
-    cameraAcceleration.y *= .9;
-    cameraAcceleration.z *= .9;
-};
-
-let onUpdate;
-document.addEventListener('keydown', (e) => {
-    keyDownListener(e);
-    onUpdate = null;
-});
-document.addEventListener('keyup', () => (onUpdate = decay));
+const movement = new MovementControls(window);
+movement.init(camera);
 
 const update = (deltaTime) => {
-    if (onUpdate) {
-        onUpdate(deltaTime);
-    }
-
-    camera.position.x += cameraAcceleration.x;
-    camera.position.y += cameraAcceleration.y;
-    camera.position.z += cameraAcceleration.z;
+    movement.update(deltaTime);
 
     renderer.render(scene, camera);
 };
