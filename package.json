@@ -5,7 +5,6 @@
   "devDependencies": {
     "storybook": "^5.3.12",
     "three": "^0.113.2",
-
     "webpack": "^4.41.5",
     "babel-loader": "^8.0.6"
   }
