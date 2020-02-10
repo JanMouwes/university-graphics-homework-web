@@ -1,0 +1,16 @@
+{
+  "camera": {
+    "field-of-view": 75,
+    "aspect-ratio-use-window": true,
+    "aspect-ratio": 0,
+    "plane-near": 0.1,
+    "plane-far": 0.1,
+    "start-position": {
+      "x": 2,
+      "y": 1,
+      "z": 5
+    },
+    "max-speed": 5,
+    "y-locked": true
+  }
+}
