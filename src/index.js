@@ -1,8 +1,8 @@
-import * as settings from "./settings";
-import * as THREE from "three";
+import * as settings from "./settings.json";
+import {Scene, PerspectiveCamera, BoxGeometry, MeshNormalMaterial, Mesh, WebGLRenderer} from "three";
 
 // Create scene
-const scene = new THREE.Scene();
+const scene = new Scene();
 
 const cameraSettings = settings.camera;
 if (cameraSettings["aspect-ratio-use-window"] === true) {
@@ -10,16 +10,16 @@ if (cameraSettings["aspect-ratio-use-window"] === true) {
 }
 
 // Create camera
-const camera = new THREE.PerspectiveCamera(
+const camera = new PerspectiveCamera(
     cameraSettings["field-of-view"], // fov — Camera frustum vertical field of view.
     cameraSettings["aspect-ratio"], // aspect — Camera frustum aspect ratio.
     cameraSettings["plane-near"], // near — Camera frustum near plane.
     cameraSettings["plane-far"]  // far — Camera frustum far plane.
 );
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshNormalMaterial();
-const cube = new THREE.Mesh(geometry, material);
+const geometry = new BoxGeometry(1, 1, 1);
+const material = new MeshNormalMaterial();
+const cube = new Mesh(geometry, material);
 
 scene.add(cube);
 
@@ -28,7 +28,7 @@ camera.position.y = 1;
 camera.position.z = 5;
 
 // Create renderer
-const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+const renderer = new WebGLRenderer({antialias: true, alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 renderer.render(scene, camera);

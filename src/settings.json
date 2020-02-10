@@ -4,7 +4,7 @@
     "aspect-ratio-use-window": true,
     "aspect-ratio": 0,
     "plane-near": 0.1,
-    "plane-far": 0.1,
+    "plane-far": 100,
     "start-position": {
       "x": 2,
       "y": 1,

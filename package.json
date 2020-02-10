@@ -2,7 +2,7 @@
   "name": "homework-web",
   "version": "0.1.1",
   "scripts": {
-    "build": "webpack --mode=development --watch"
+    "build": "webpack --mode=development --watch --no-cache"
   },
   "dependencies": {},
   "devDependencies": {
