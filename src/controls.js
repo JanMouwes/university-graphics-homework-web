@@ -32,18 +32,24 @@ export default class MovementControls {
     /** @param {number} deltaMillis */
     update(deltaMillis) {
         const displacement = new Vector3().copy(this.velocity).multiplyScalar(deltaMillis / 1000.0);
+        const previousPosition = this._camera.position.clone();
 
         if (!this._keyDown) {
+            // decay velocity
             this.velocity.multiplyScalar(.9);
         }
 
-        const localZAxis = this.headingAxis();
-        const localXAxis = new Vector3(-localZAxis.z, 0, localZAxis.x);
-        this._camera.translateOnAxis(localZAxis, displacement.x);
-        this._camera.translateOnAxis(localXAxis, displacement.z);
+        // Sideways
+        const localXAxis = this.headingAxis();
 
+        // Forwards
+        const localZAxis = new Vector3(-localXAxis.z, 0, localXAxis.x);
+        this._camera.translateOnAxis(localXAxis, displacement.x);
+        this._camera.translateOnAxis(localZAxis, displacement.z);
+
+        //  Ensure y stays the same
         if (this.lockY) {
-            this._camera.position.y = 1;
+            this._camera.position.y = previousPosition.y;
         }
     }
 
@@ -57,7 +63,7 @@ export default class MovementControls {
     };
 
     normalisedHeading() {
-        const normalisedHeading = new Vector2().copy(this._heading);
+        const normalisedHeading = this._heading.clone();
         normalisedHeading.normalize();
 
         return normalisedHeading;
