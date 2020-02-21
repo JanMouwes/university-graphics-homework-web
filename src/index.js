@@ -50,6 +50,7 @@ loader.load(
 
         gltf.animations; // Array<THREE.AnimationClip>
         gltf.scene; // THREE.Scene
+        gltf.scene.scale.set(10,10,10);
         gltf.scenes; // Array<THREE.Scene>
         gltf.cameras; // Array<THREE.Camera>
         gltf.asset; // Object
