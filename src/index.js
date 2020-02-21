@@ -1,6 +1,7 @@
 import * as settings from "./settings.json";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
-import {Scene, PerspectiveCamera, BoxGeometry, MeshNormalMaterial, Mesh, WebGLRenderer} from "three";
+import {Scene, PerspectiveCamera, BoxGeometry, MeshNormalMaterial, Mesh, WebGLRenderer, AmbientLight, DirectionalLight} from "three";
+import * as THREE from "three";
 import CameraControls from "./controls";
 
 // Create scene
@@ -67,6 +68,23 @@ loader.load(
 
     }
 );
+
+var ambient = new AmbientLight( 0x404040 );
+scene.add( ambient );
+
+// directional - KEY LIGHT
+keyLight = new THREE.DirectionalLight( 0xdddddd, .7 );
+keyLight.position.set( -80, 60, 80 );
+scene.add( keyLight );
+
+//fillLightHelper = new THREE.DirectionalLightHelper( fillLight, 15 );
+//scene.add( fillLightHelper );
+
+// directional - RIM LIGHT
+//rimLight = new DirectionalLight( 0xdddddd, .6 );
+//rimLight.position.set( -20, 80, -80 );
+//scene.add( rimLight );
+
 const movement = new CameraControls(window);
 movement.init(camera);
 
