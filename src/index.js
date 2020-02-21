@@ -3,6 +3,7 @@ import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {Scene, PerspectiveCamera, BoxGeometry, MeshNormalMaterial, Mesh, WebGLRenderer, AmbientLight, DirectionalLight} from "three";
 import * as THREE from "three";
 import CameraControls from "./controls";
+import createSkybox from "./skybox";
 
 // Create scene
 const scene = new Scene();
@@ -24,7 +25,7 @@ const geometry = new BoxGeometry(1, 1, 1);
 const material = new MeshNormalMaterial();
 const cube = new Mesh(geometry, material);
 
-//scene.add(cube);
+// scene.add(cube);
 
 camera.position.x = cameraSettings["start-position"].x;
 camera.position.y = cameraSettings["start-position"].y;
@@ -39,7 +40,7 @@ renderer.render(scene, camera);
 // Instantiate a loader
 var loader = new GLTFLoader();
 
-const scale = 0.01
+const scale = 0.01;
 
 // Load a glTF resource
 loader.load(
@@ -71,6 +72,9 @@ loader.load(
 
     }
 );
+
+const skybox = createSkybox(settings.skybox);
+scene.add(skybox);
 
 var ambient = new AmbientLight( 0x404040 );
 scene.add( ambient );
