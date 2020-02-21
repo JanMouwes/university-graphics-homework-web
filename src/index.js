@@ -24,7 +24,7 @@ const geometry = new BoxGeometry(1, 1, 1);
 const material = new MeshNormalMaterial();
 const cube = new Mesh(geometry, material);
 
-//scene.add(cube);
+scene.add(cube);
 
 camera.position.x = cameraSettings["start-position"].x;
 camera.position.y = cameraSettings["start-position"].y;
@@ -39,37 +39,102 @@ renderer.render(scene, camera);
 // Instantiate a loader
 var loader = new GLTFLoader();
 
-const scale = 0.01
+function msg(xhr) {
+    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+}
+
+function msgerror(error) {
+    console.log('An error happened');
+}
+
+var canscale = 0.01;
+var car0scale = 0.07;
+var car1scale = 0.012;
+var car2scale = car0scale;
+var car3scale = 0.0045;
+var car4scale = 0.014;
 
 // Load a glTF resource
 loader.load(
     // resource URL
-    './src/scene.gltf',
+    './src/can.gltf',
     // called when the resource is loaded
     function (gltf) {
 
         scene.add(gltf.scene);
-
+    
         gltf.animations; // Array<THREE.AnimationClip>
         gltf.scene; // THREE.Scene
-        gltf.scene.scale.set(scale, scale, scale);
+        gltf.scene.scale.set(canscale, canscale, canscale);
+        gltf.scene.position.set(1, 0, 0);
         gltf.scenes; // Array<THREE.Scene>
         gltf.cameras; // Array<THREE.Camera>
         gltf.asset; // Object
-
     },
     // called while loading is progressing
-    function (xhr) {
-
-        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-
-    },
+    msg,
     // called when loading has errors
-    function (error) {
+    msgerror
+);
+loader.load(
+    './src/car0.gltf',
+    function (gltf) {
 
-        console.log('An error happened');
+        scene.add(gltf.scene);
+    
+        gltf.scene.scale.set(car0scale, car0scale, car0scale);
+        gltf.scene.position.set(5, 1, 0);
+    },
+    msg,
+    msgerror
+);
+loader.load(
+    './src/car1.gltf',
+    function (gltf) {
 
-    }
+        scene.add(gltf.scene);
+    
+        gltf.scene.scale.set(car1scale, car1scale, car1scale);
+        gltf.scene.position.set(10, -3, 0);
+    },
+    msg,
+    msgerror
+);
+loader.load(
+    './src/car2.gltf',
+    function (gltf) {
+
+        scene.add(gltf.scene);
+    
+        gltf.scene.scale.set(car2scale, car2scale, car2scale);
+        gltf.scene.position.set(15, 1, 0);
+    },
+    msg,
+    msgerror
+);
+loader.load(
+    './src/car3.gltf',
+    function (gltf) {
+
+        scene.add(gltf.scene);
+    
+        gltf.scene.scale.set(car3scale, car3scale, car3scale);
+        gltf.scene.position.set(20, -1, 0);
+    },
+    msg,
+    msgerror
+);
+loader.load(
+    './src/car4.gltf',
+    function (gltf) {
+
+        scene.add(gltf.scene);
+    
+        gltf.scene.scale.set(car4scale, car4scale, car4scale);
+        gltf.scene.position.set(25, -1, 0);
+    },
+    msg,
+    msgerror
 );
 
 var ambient = new AmbientLight( 0x404040 );
