@@ -3,6 +3,7 @@ import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {Scene, PerspectiveCamera, BoxGeometry, MeshNormalMaterial, Mesh, WebGLRenderer, AmbientLight, DirectionalLight} from "three";
 import * as THREE from "three";
 import CameraControls from "./controls";
+import createSkybox from "./skybox";
 
 // Create scene
 const scene = new Scene();
@@ -136,6 +137,9 @@ loader.load(
     msg,
     msgerror
 );
+
+const skybox = createSkybox(settings.skybox);
+scene.add(skybox);
 
 var ambient = new AmbientLight( 0x404040 );
 scene.add( ambient );

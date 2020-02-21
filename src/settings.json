@@ -4,7 +4,7 @@
     "aspect-ratio-use-window": true,
     "aspect-ratio": 0,
     "plane-near": 0.1,
-    "plane-far": 100,
+    "plane-far": 10000,
     "start-position": {
       "x": 2,
       "y": 1,
@@ -12,5 +12,19 @@
     },
     "max-speed": 5,
     "y-locked": true
+  },
+  "skybox": {
+    "path": "ForbiddenCity",
+    "x-positive": "posx.jpg",
+    "x-negative": "negx.jpg",
+    "y-positive": "posy.jpg",
+    "y-negative": "negy.jpg",
+    "z-positive": "posz.jpg",
+    "z-negative": "negz.jpg",
+    "distance": {
+      "width": 5000,
+      "height": 5000,
+      "depth": 5000
+    }
   }
 }
