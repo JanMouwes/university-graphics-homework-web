@@ -153,9 +153,9 @@ scene.add( keyLight );
 //scene.add( fillLightHelper );
 
 // directional - RIM LIGHT
-//rimLight = new DirectionalLight( 0xdddddd, .6 );
-//rimLight.position.set( -20, 80, -80 );
-//scene.add( rimLight );
+const rimLight = new DirectionalLight( 0xdddddd, .6 );
+rimLight.position.set( -20, 80, -80 );
+scene.add( rimLight );
 
 const movement = new CameraControls(window);
 movement.init(camera);
