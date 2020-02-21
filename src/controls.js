@@ -10,6 +10,8 @@ export default class MovementControls {
         this._heading = new Vector2();
         this.lockY = true;
 
+        this._isMouseDown = false;
+
         this.keyDownHandler = this.keyDownHandler.bind(this);
         this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
     }
@@ -22,6 +24,9 @@ export default class MovementControls {
         this._window.addEventListener("keyup", () => (this._keyDown = false));
 
         this._window.addEventListener("mousemove", this.mouseMoveHandler);
+        this._window.addEventListener("mousedown", () => (this._isMouseDown = true));
+        this._window.addEventListener("mouseup", () => (this._isMouseDown = false));
+
 
         this._camera = camera;
 
@@ -77,6 +82,11 @@ export default class MovementControls {
 
     /** @param {MouseEvent} e */
     mouseMoveHandler(e) {
+        // Only handle when the mouse-button is down
+        if (!this._isMouseDown) {
+            return;
+        }
+
         //  Movement around the X-axis, in radians
         const movementXRadians = (e.movementY / this._window.innerHeight) * 2 * Math.PI;
         //  Movement around the Y-axis, in radians
