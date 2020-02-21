@@ -24,7 +24,7 @@ const geometry = new BoxGeometry(1, 1, 1);
 const material = new MeshNormalMaterial();
 const cube = new Mesh(geometry, material);
 
-scene.add(cube);
+//scene.add(cube);
 
 camera.position.x = cameraSettings["start-position"].x;
 camera.position.y = cameraSettings["start-position"].y;
@@ -39,6 +39,8 @@ renderer.render(scene, camera);
 // Instantiate a loader
 var loader = new GLTFLoader();
 
+const scale = 0.01
+
 // Load a glTF resource
 loader.load(
     // resource URL
@@ -50,7 +52,7 @@ loader.load(
 
         gltf.animations; // Array<THREE.AnimationClip>
         gltf.scene; // THREE.Scene
-        gltf.scene.scale.set(10,10,10);
+        gltf.scene.scale.set(scale, scale, scale);
         gltf.scenes; // Array<THREE.Scene>
         gltf.cameras; // Array<THREE.Camera>
         gltf.asset; // Object
