@@ -73,7 +73,7 @@ var ambient = new AmbientLight( 0x404040 );
 scene.add( ambient );
 
 // directional - KEY LIGHT
-keyLight = new THREE.DirectionalLight( 0xdddddd, .7 );
+const keyLight = new THREE.DirectionalLight( 0xdddddd, .7 );
 keyLight.position.set( -80, 60, 80 );
 scene.add( keyLight );
 
