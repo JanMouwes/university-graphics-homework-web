@@ -51,9 +51,8 @@ function msgerror(error) {
 var canscale = 0.01;
 var car0scale = 0.07;
 var car1scale = 0.012;
-var car2scale = car0scale;
-var car3scale = 0.0045;
-var car4scale = 0.014;
+var car2scale = 0.0045;
+var car3scale = 0.014;
 
 // Load a glTF resource
 loader.load(
@@ -84,7 +83,7 @@ loader.load(
         scene.add(gltf.scene);
     
         gltf.scene.scale.set(car0scale, car0scale, car0scale);
-        gltf.scene.position.set(5, 1, 0);
+        gltf.scene.position.set(10, 1, 0);
     },
     msg,
     msgerror
@@ -96,7 +95,7 @@ loader.load(
         scene.add(gltf.scene);
     
         gltf.scene.scale.set(car1scale, car1scale, car1scale);
-        gltf.scene.position.set(10, -3, 0);
+        gltf.scene.position.set(20, -3, 0);
     },
     msg,
     msgerror
@@ -108,7 +107,7 @@ loader.load(
         scene.add(gltf.scene);
     
         gltf.scene.scale.set(car2scale, car2scale, car2scale);
-        gltf.scene.position.set(15, 1, 0);
+        gltf.scene.position.set(30, -1, 0);
     },
     msg,
     msgerror
@@ -120,19 +119,7 @@ loader.load(
         scene.add(gltf.scene);
     
         gltf.scene.scale.set(car3scale, car3scale, car3scale);
-        gltf.scene.position.set(20, -1, 0);
-    },
-    msg,
-    msgerror
-);
-loader.load(
-    './src/car4.gltf',
-    function (gltf) {
-
-        scene.add(gltf.scene);
-    
-        gltf.scene.scale.set(car4scale, car4scale, car4scale);
-        gltf.scene.position.set(25, -1, 0);
+        gltf.scene.position.set(40, -1, 0);
     },
     msg,
     msgerror
