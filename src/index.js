@@ -25,6 +25,25 @@ const geometry = new BoxGeometry(1, 1, 1);
 const material = new MeshNormalMaterial();
 const cube = new Mesh(geometry, material);
 
+// adding floor
+/*
+const planegeometry = new THREE.PlaneGeometry(200, 200, 1);
+
+const colorMap = new THREE.TextureLoader().load('./src/textures/BrickWall/Brick_Wall_017_basecolor.jpg');
+colorMap.wrapS = THREE.RepeatWrapping;
+colorMap.wrapT = THREE.RepeatWrapping;
+colorMap.repeat.set(24, 24);
+
+var materialbrick = new THREE.MeshStandardMaterial({
+    map: colorMap
+});
+var mesh = new THREE.Mesh(planegeometry, materialbrick);
+mesh.material.side = THREE.DoubleSide;
+mesh.rotation.x = Math.PI / 2;
+
+scene.add(mesh);
+*/
+
 scene.add(cube);
 
 camera.position.x = cameraSettings["start-position"].x;
@@ -125,22 +144,26 @@ loader.load(
     msgerror
 );
 
-const skybox = createSkybox(settings.skybox);
+var skybox = createSkybox(settings.skybox);
 scene.add(skybox);
 
-var ambient = new AmbientLight( 0x404040 );
+var ambient = new AmbientLight( 0x404040, 10 );
 scene.add( ambient );
 
 // directional - KEY LIGHT
-const keyLight = new THREE.DirectionalLight( 0xdddddd, .7 );
+var keyLight = new THREE.DirectionalLight( 0xdddddd, 10 );
 keyLight.position.set( -80, 60, 80 );
 scene.add( keyLight );
 
-//fillLightHelper = new THREE.DirectionalLightHelper( fillLight, 15 );
-//scene.add( fillLightHelper );
+// Geen idee wat dit doet
+/*
+var fillLight = new THREE.DirectionalLight(0xffcc00, 10);
+var fillLightHelper = new THREE.DirectionalLightHelper( fillLight, 1 );
+scene.add( fillLightHelper );
+*/
 
 // directional - RIM LIGHT
-const rimLight = new DirectionalLight( 0xdddddd, .6 );
+var rimLight = new DirectionalLight( 0xdddddd, 5 );
 rimLight.position.set( -20, 80, -80 );
 scene.add( rimLight );
 
