@@ -21,9 +21,19 @@ const camera = new PerspectiveCamera(
     cameraSettings["plane-far"]  // far — Camera frustum far plane.
 );
 
-const geometry = new BoxGeometry(1, 1, 1);
-const material = new MeshNormalMaterial();
-const cube = new Mesh(geometry, material);
+var geometry = new THREE.PlaneGeometry( 1000, 1000, 10, 10 );
+var material = new THREE.MeshBasicMaterial( { color: 0xffcc00, wireframe: false } );
+var floor = new THREE.Mesh( geometry, material );
+floor.material.side = THREE.DoubleSide;
+floor.rotation.x = Math.PI / 2;
+floor.position.set(0, 0, 0);
+scene.add( floor ); 
+    
+var geometry = new BoxGeometry(1, 1, 1);
+var material = new MeshNormalMaterial();
+var cube = new Mesh(geometry, material);
+cube.castShadow = true;
+cube.receiveShadow = true;
 
 // adding floor
 /*
@@ -53,7 +63,7 @@ const renderer = new WebGLRenderer({antialias: true, alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFShadowMap;
+renderer.shadowMap.type = THREE.BasicShadowMap;
 
 renderer.render(scene, camera);
 
@@ -103,7 +113,7 @@ loader.load(
         scene.add(gltf.scene);
     
         gltf.scene.scale.set(car0scale, car0scale, car0scale);
-        gltf.scene.position.set(10, 1, 0);
+        gltf.scene.position.set(10, 4, 0);
     },
     msg,
     msgerror
@@ -115,7 +125,7 @@ loader.load(
         scene.add(gltf.scene);
     
         gltf.scene.scale.set(car1scale, car1scale, car1scale);
-        gltf.scene.position.set(20, -3, 0);
+        gltf.scene.position.set(20, 1, 0);
     },
     msg,
     msgerror
@@ -127,7 +137,7 @@ loader.load(
         scene.add(gltf.scene);
     
         gltf.scene.scale.set(car2scale, car2scale, car2scale);
-        gltf.scene.position.set(30, -1, 0);
+        gltf.scene.position.set(30, 3, 0);
     },
     msg,
     msgerror
@@ -139,7 +149,7 @@ loader.load(
         scene.add(gltf.scene);
     
         gltf.scene.scale.set(car3scale, car3scale, car3scale);
-        gltf.scene.position.set(40, -1, 0);
+        gltf.scene.position.set(40, 3, 0);
     },
     msg,
     msgerror
@@ -148,21 +158,20 @@ loader.load(
 var skybox = createSkybox(settings.skybox);
 scene.add(skybox);
 
-var ambient = new AmbientLight( 0x404040, 10 );
+var ambient = new AmbientLight( 0x404040, 15 );
 scene.add( ambient );
 
 // directional - KEY LIGHT
 var keyLight = new THREE.DirectionalLight( 0xdddddd, 10 );
-keyLight.position.set( -80, 60, 80 );
+keyLight.position.set( -3, 6, -3 );
 
 keyLight.castShadow = true;
-keyLight.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 10, 2500 ) );
-keyLight.shadow.bias = 0.0001;
-keyLight.shadow.mapSize.width = 2048;
-keyLight.shadow.mapSize.height = 1024;
+// keyLight.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 10, 2500 ) );
+// keyLight.shadow.bias = 0.0001;
+// keyLight.shadow.mapSize.width = 2048;
+// keyLight.shadow.mapSize.height = 1024;
 
-cube.castShadow = true;
-//floor.receiveShadow = true;
+floor.receiveShadow = true;
 scene.add( keyLight );
 scene.add(cube);
 
