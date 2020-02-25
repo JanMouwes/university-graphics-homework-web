@@ -1,9 +1,21 @@
 import * as settings from "./settings.json";
-import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
-import {Scene, PerspectiveCamera, BoxGeometry, MeshNormalMaterial, Mesh, WebGLRenderer, AmbientLight, DirectionalLight} from "three";
+import {
+    Scene,
+    PerspectiveCamera,
+    BoxGeometry,
+    MeshNormalMaterial,
+    Mesh,
+    WebGLRenderer,
+    AmbientLight,
+    Vector3,
+    DirectionalLight,
+    LightShadow
+} from "three";
 import * as THREE from "three";
 import CameraControls from "./controls";
 import createSkybox from "./skybox";
+import SodaCan from "./objects/soda-can";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 // Create scene
 const scene = new Scene();
@@ -67,6 +79,9 @@ renderer.shadowMap.type = THREE.BasicShadowMap;
 
 renderer.render(scene, camera);
 
+const skybox = createSkybox(settings.skybox);
+scene.add(skybox);
+
 // Instantiate a loader
 var loader = new GLTFLoader();
 
@@ -92,7 +107,7 @@ loader.load(
     function (gltf) {
 
         scene.add(gltf.scene);
-    
+
         gltf.animations; // Array<THREE.AnimationClip>
         gltf.scene; // THREE.Scene
         gltf.scene.scale.set(canscale, canscale, canscale);
@@ -111,7 +126,7 @@ loader.load(
     function (gltf) {
 
         scene.add(gltf.scene);
-    
+
         gltf.scene.scale.set(car0scale, car0scale, car0scale);
         gltf.scene.position.set(10, 4, 0);
     },
@@ -123,7 +138,7 @@ loader.load(
     function (gltf) {
 
         scene.add(gltf.scene);
-    
+
         gltf.scene.scale.set(car1scale, car1scale, car1scale);
         gltf.scene.position.set(20, 1, 0);
     },
@@ -135,7 +150,7 @@ loader.load(
     function (gltf) {
 
         scene.add(gltf.scene);
-    
+
         gltf.scene.scale.set(car2scale, car2scale, car2scale);
         gltf.scene.position.set(30, 3, 0);
     },
@@ -147,7 +162,7 @@ loader.load(
     function (gltf) {
 
         scene.add(gltf.scene);
-    
+
         gltf.scene.scale.set(car3scale, car3scale, car3scale);
         gltf.scene.position.set(40, 3, 0);
     },
@@ -155,25 +170,20 @@ loader.load(
     msgerror
 );
 
-var skybox = createSkybox(settings.skybox);
-scene.add(skybox);
-
-var ambient = new AmbientLight( 0x404040, 15 );
-scene.add( ambient );
+var ambient = new AmbientLight(0x404040, 10);
+scene.add(ambient);
 
 // directional - KEY LIGHT
-var keyLight = new THREE.DirectionalLight( 0xdddddd, 10 );
-keyLight.position.set( -3, 6, -3 );
-
+var keyLight = new THREE.DirectionalLight(0xdddddd, 10);
+keyLight.position.set(-80, 60, 80);
 keyLight.castShadow = true;
-// keyLight.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 10, 2500 ) );
-// keyLight.shadow.bias = 0.0001;
-// keyLight.shadow.mapSize.width = 2048;
-// keyLight.shadow.mapSize.height = 1024;
+keyLight.shadow = new LightShadow( new PerspectiveCamera( 50, 1, 10, 2500 ) );
+keyLight.shadow.bias = 0.0001;
+keyLight.shadow.mapSize.width = 2048;
+keyLight.shadow.mapSize.height = 1024;
 
-floor.receiveShadow = true;
-scene.add( keyLight );
-scene.add(cube);
+cube.castShadow = true;
+//floor.receiveShadow = true;scene.add(keyLight);scene.add(cube);
 
 // Geen idee wat dit doet
 /*
@@ -190,13 +200,40 @@ scene.add( rimLight );
 const movement = new CameraControls(window);
 movement.init(camera);
 
+/**
+ * @type {SodaCan[]}
+ */
+const gameObjects = [];
+
+const GRAVITY = new Vector3(0, -9.81, 0);
+
+const shootCan = () => {
+    const newCan = new SodaCan(camera.position.clone(), .01);
+
+    camera.getWorldDirection(newCan.velocity);
+    newCan.velocity = newCan.velocity.add(GRAVITY);
+
+    console.log(newCan.velocity);
+
+    newCan.init(scene);
+    gameObjects.push(newCan);
+};
+
 const update = (deltaTime) => {
     movement.update(deltaTime);
+
+    gameObjects.forEach(obj => obj.update(deltaTime));
 
     renderer.render(scene, camera);
 };
 
 let lastRender = 0;
+
+window.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    shootCan();
+});
+
 const loop = (timestamp) => {
     const progress = timestamp - lastRender;
 

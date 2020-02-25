@@ -9,7 +9,7 @@ import {MeshBasicMaterial, BoxGeometry, Mesh, BackSide} from "three";
 export default function createSkybox(settings) {
     //  This needs to stay in-order
     const directions = ["x-positive", "x-negative", "y-positive", "y-negative", "z-positive", "z-negative"];
-    const path = "src/textures/" + settings.path;
+    const path = "src/resources/textures/" + settings.path;
 
     const textureLoader = new TextureLoader();
 
