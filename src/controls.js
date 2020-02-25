@@ -1,4 +1,4 @@
-import {Euler, Vector2, Vector3} from "three";
+import {Vector3} from "three";
 
 export default class MovementControls {
 
@@ -7,7 +7,6 @@ export default class MovementControls {
         this._window = window;
 
         this.velocity = new Vector3();
-        this._heading = new Vector2();
         this.lockY = true;
 
         this._isMouseDown = false;
@@ -36,21 +35,19 @@ export default class MovementControls {
 
     /** @param {number} deltaMillis */
     update(deltaMillis) {
-        const displacement = new Vector3().copy(this.velocity).multiplyScalar(deltaMillis / 1000.0);
+        const displacement = this.velocity.clone().multiplyScalar(deltaMillis / 1000.0);
         const previousPosition = this._camera.position.clone();
 
         if (!this._keyDown) {
             // decay velocity
-            this.velocity.multiplyScalar(.9);
+            this.velocity.multiplyScalar(.8);
+            if (this.velocity.lengthSq() < 0.001) {
+                this.velocity.set(0, 0, 0);
+            }
         }
 
-        // Sideways
-        const localXAxis = this.headingAxis();
-
-        // Forwards
-        const localZAxis = new Vector3(-localXAxis.z, 0, localXAxis.x);
-        this._camera.translateOnAxis(localXAxis, displacement.x);
-        this._camera.translateOnAxis(localZAxis, displacement.z);
+        this._camera.translateX(displacement.x);
+        this._camera.translateZ( displacement.z);
 
         //  Ensure y stays the same
         if (this.lockY) {
@@ -66,19 +63,6 @@ export default class MovementControls {
 
         this._keyDown = true;
     };
-
-    normalisedHeading() {
-        const normalisedHeading = this._heading.clone();
-        normalisedHeading.normalize();
-
-        return normalisedHeading;
-    }
-
-    headingAxis() {
-        const normalisedHeading = this.normalisedHeading();
-
-        return new Vector3(Math.cos(normalisedHeading.x), 0, Math.sin(normalisedHeading.x));
-    }
 
     /** @param {MouseEvent} e */
     mouseMoveHandler(e) {
