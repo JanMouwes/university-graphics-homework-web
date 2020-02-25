@@ -44,8 +44,6 @@ mesh.rotation.x = Math.PI / 2;
 scene.add(mesh);
 */
 
-scene.add(cube);
-
 camera.position.x = cameraSettings["start-position"].x;
 camera.position.y = cameraSettings["start-position"].y;
 camera.position.z = cameraSettings["start-position"].z;
@@ -53,6 +51,9 @@ camera.position.z = cameraSettings["start-position"].z;
 // Create renderer
 const renderer = new WebGLRenderer({antialias: true, alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
+
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFShadowMap;
 
 renderer.render(scene, camera);
 
@@ -153,7 +154,17 @@ scene.add( ambient );
 // directional - KEY LIGHT
 var keyLight = new THREE.DirectionalLight( 0xdddddd, 10 );
 keyLight.position.set( -80, 60, 80 );
+
+keyLight.castShadow = true;
+keyLight.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 10, 2500 ) );
+keyLight.shadow.bias = 0.0001;
+keyLight.shadow.mapSize.width = 2048;
+keyLight.shadow.mapSize.height = 1024;
+
+cube.castShadow = true;
+//floor.receiveShadow = true;
 scene.add( keyLight );
+scene.add(cube);
 
 // Geen idee wat dit doet
 /*
