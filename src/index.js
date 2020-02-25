@@ -34,7 +34,24 @@ const geometry = new BoxGeometry(1, 1, 1);
 const material = new MeshNormalMaterial();
 const cube = new Mesh(geometry, material);
 
-// scene.add(cube);
+// adding floor
+/*
+const planegeometry = new THREE.PlaneGeometry(200, 200, 1);
+
+const colorMap = new THREE.TextureLoader().load('./src/textures/BrickWall/Brick_Wall_017_basecolor.jpg');
+colorMap.wrapS = THREE.RepeatWrapping;
+colorMap.wrapT = THREE.RepeatWrapping;
+colorMap.repeat.set(24, 24);
+
+var materialbrick = new THREE.MeshStandardMaterial({
+    map: colorMap
+});
+var mesh = new THREE.Mesh(planegeometry, materialbrick);
+mesh.material.side = THREE.DoubleSide;
+mesh.rotation.x = Math.PI / 2;
+
+scene.add(mesh);
+*/
 
 camera.position.x = cameraSettings["start-position"].x;
 camera.position.y = cameraSettings["start-position"].y;
@@ -44,26 +61,129 @@ camera.position.z = cameraSettings["start-position"].z;
 const renderer = new WebGLRenderer({antialias: true, alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFShadowMap;
+
 renderer.render(scene, camera);
 
 const skybox = createSkybox(settings.skybox);
+// Instantiate a loader
+var loader = new GLTFLoader();
+
+function msg(xhr) {
+    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+}
+
+function msgerror(error) {
+    console.log('An error happened');
+}
+
+var canscale = 0.01;
+var car0scale = 0.07;
+var car1scale = 0.012;
+var car2scale = 0.0045;
+var car3scale = 0.014;
+
+// Load a glTF resource
+loader.load(
+    // resource URL
+    './src/can.gltf',
+    // called when the resource is loaded
+    function (gltf) {
+
+        scene.add(gltf.scene);
+
+        gltf.animations; // Array<THREE.AnimationClip>
+        gltf.scene; // THREE.Scene
+        gltf.scene.scale.set(canscale, canscale, canscale);
+        gltf.scene.position.set(1, 0, 0);
+        gltf.scenes; // Array<THREE.Scene>
+        gltf.cameras; // Array<THREE.Camera>
+        gltf.asset; // Object
+    },
+    // called while loading is progressing
+    msg,
+    // called when loading has errors
+    msgerror
+);
+loader.load(
+    './src/car0.gltf',
+    function (gltf) {
+
+        scene.add(gltf.scene);
+
+        gltf.scene.scale.set(car0scale, car0scale, car0scale);
+        gltf.scene.position.set(10, 1, 0);
+    },
+    msg,
+    msgerror
+);
+loader.load(
+    './src/car1.gltf',
+    function (gltf) {
+
+        scene.add(gltf.scene);
+
+        gltf.scene.scale.set(car1scale, car1scale, car1scale);
+        gltf.scene.position.set(20, -3, 0);
+    },
+    msg,
+    msgerror
+);
+loader.load(
+    './src/car2.gltf',
+    function (gltf) {
+
+        scene.add(gltf.scene);
+
+        gltf.scene.scale.set(car2scale, car2scale, car2scale);
+        gltf.scene.position.set(30, -1, 0);
+    },
+    msg,
+    msgerror
+);
+loader.load(
+    './src/car3.gltf',
+    function (gltf) {
+
+        scene.add(gltf.scene);
+
+        gltf.scene.scale.set(car3scale, car3scale, car3scale);
+        gltf.scene.position.set(40, -1, 0);
+    },
+    msg,
+    msgerror
+);
+
+var skybox = createSkybox(settings.skybox);
 scene.add(skybox);
 
-var ambient = new AmbientLight(0x404040);
+var ambient = new AmbientLight(0x404040, 10);
 scene.add(ambient);
 
 // directional - KEY LIGHT
-const keyLight = new THREE.DirectionalLight(0xdddddd, 10);
+var keyLight = new THREE.DirectionalLight(0xdddddd, 10);
 keyLight.position.set(-80, 60, 80);
-scene.add(keyLight);
+keyLight.castShadow = true;
+keyLight.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 10, 2500 ) );
+keyLight.shadow.bias = 0.0001;
+keyLight.shadow.mapSize.width = 2048;
+keyLight.shadow.mapSize.height = 1024;
 
-//fillLightHelper = new THREE.DirectionalLightHelper( fillLight, 15 );
-//scene.add( fillLightHelper );
+cube.castShadow = true;
+//floor.receiveShadow = true;scene.add(keyLight);scene.add(cube);
+
+// Geen idee wat dit doet
+/*
+var fillLight = new THREE.DirectionalLight(0xffcc00, 10);
+var fillLightHelper = new THREE.DirectionalLightHelper( fillLight, 1 );
+scene.add( fillLightHelper );
+*/
 
 // directional - RIM LIGHT
-//rimLight = new DirectionalLight( 0xdddddd, .6 );
-//rimLight.position.set( -20, 80, -80 );
-//scene.add( rimLight );
+var rimLight = new DirectionalLight( 0xdddddd, 5 );
+rimLight.position.set( -20, 80, -80 );
+scene.add( rimLight );
 
 const movement = new CameraControls(window);
 movement.init(camera);
