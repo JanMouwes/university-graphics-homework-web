@@ -7,12 +7,15 @@ import {
     Mesh,
     WebGLRenderer,
     AmbientLight,
-    Vector3
+    Vector3,
+    DirectionalLight,
+    LightShadow
 } from "three";
 import * as THREE from "three";
 import CameraControls from "./controls";
 import createSkybox from "./skybox";
 import SodaCan from "./objects/soda-can";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 // Create scene
 const scene = new Scene();
@@ -67,6 +70,8 @@ renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.render(scene, camera);
 
 const skybox = createSkybox(settings.skybox);
+scene.add(skybox);
+
 // Instantiate a loader
 var loader = new GLTFLoader();
 
@@ -155,9 +160,6 @@ loader.load(
     msgerror
 );
 
-var skybox = createSkybox(settings.skybox);
-scene.add(skybox);
-
 var ambient = new AmbientLight(0x404040, 10);
 scene.add(ambient);
 
@@ -165,7 +167,7 @@ scene.add(ambient);
 var keyLight = new THREE.DirectionalLight(0xdddddd, 10);
 keyLight.position.set(-80, 60, 80);
 keyLight.castShadow = true;
-keyLight.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 10, 2500 ) );
+keyLight.shadow = new LightShadow( new PerspectiveCamera( 50, 1, 10, 2500 ) );
 keyLight.shadow.bias = 0.0001;
 keyLight.shadow.mapSize.width = 2048;
 keyLight.shadow.mapSize.height = 1024;
