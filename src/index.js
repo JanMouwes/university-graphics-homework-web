@@ -53,7 +53,7 @@ cube.receiveShadow = true;
 scene.add(cube);
 
 var geometry = new BoxGeometry(8,5,8);
-var texture = new THREE.TextureLoader().load('./src/textures/BrickWall/Brick_Wall_017_basecolor.jpg');
+var texture = new THREE.TextureLoader().load('./src/resources/models/textures/BrickWall/Brick_Wall_017_basecolor.jpg');
 texture.repeat.set(4, 4);
 texture.wrapS = THREE.RepeatWrapping;
 texture.wrapT = THREE.RepeatWrapping;
@@ -64,7 +64,7 @@ huis.position.set(0, 2.5, -20);
 scene.add(huis);
 
 var geometry = new ConeGeometry(7, 2.5, 4, 1, false, Math.PI / 4);
-var texture = new THREE.TextureLoader().load('./src/textures/TerracottaRoof/Shingles_Terracotta_001_basecolor.jpg');
+var texture = new THREE.TextureLoader().load('./src/resources/models/textures/TerracottaRoof/Shingles_Terracotta_001_basecolor.jpg');
 texture.repeat.set(6, 6);
 texture.wrapS = THREE.RepeatWrapping;
 texture.wrapT = THREE.RepeatWrapping;
@@ -118,32 +118,10 @@ const car1scale = 0.012;
 const car2scale = 0.0045;
 const car3scale = 0.014;
 
-// Load a glTF resource
-loader.load(
-    // resource URL
-    './src/can.gltf',
-    // called when the resource is loaded
-    function (gltf) {
+const can = new SodaCan(canscale);
+can.init(loader, scene, new Vector3(1, 0, 0));
 
-        scene.add(gltf.scene);
-
-        gltf.animations; // Array<THREE.AnimationClip>
-        gltf.scene; // THREE.Scene
-        gltf.scene.scale.set(canscale, canscale, canscale);
-        gltf.scene.position.set(1, 0, 0);
-        gltf.scenes; // Array<THREE.Scene>
-        gltf.cameras; // Array<THREE.Camera>
-        gltf.asset; // Object
-    },
-    // called while loading is progressing
-    msg,
-    // called when loading has errors
-    msgerror
-);
 /*
-loader.load(
-    './src/car0.gltf',
-    function (gltf) {
     const can = new SodaCan(canscale);
     can.init(loader, scene, new Vector3(1, 0, 0));
 
@@ -158,25 +136,6 @@ loader.load(
 
     const car3 = new EntityBase("car3.gltf", car3scale);
     car3.init(loader, scene, new Vector3(40, 1.75, 0));
-
-    gltf.scene.scale.set(car2scale, car2scale, car2scale);
-    gltf.scene.position.set(30, 3, 0);
-    },
-    msg,
-    msgerror
-);
-loader.load(
-    './src/car3.gltf',
-    function (gltf) {
-
-        scene.add(gltf.scene);
-
-        gltf.scene.scale.set(car3scale, car3scale, car3scale);
-        gltf.scene.position.set(40, 3, 0);
-    },
-    msg,
-    msgerror
-);
 */
 
 const ambient = new AmbientLight(0x404040, 10);
