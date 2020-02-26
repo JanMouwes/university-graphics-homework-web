@@ -22,7 +22,7 @@ export default class SodaCan {
         this.velocity = new Vector3();
 
         //  Hardcoded for now
-        this._textureSrc = "scene.gltf"
+        this._textureSrc = "can.gltf"
     }
 
     init(scene) {

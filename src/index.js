@@ -9,7 +9,8 @@ import {
     AmbientLight,
     Vector3,
     DirectionalLight,
-    LightShadow
+    LightShadow,
+    ConeGeometry
 } from "three";
 import * as THREE from "three";
 import CameraControls from "./controls";
@@ -36,9 +37,9 @@ const camera = new PerspectiveCamera(
 var geometry = new THREE.PlaneGeometry( 1000, 1000, 10, 10 );
 var material = new THREE.MeshBasicMaterial( { color: 0xffcc00, wireframe: false } );
 var floor = new THREE.Mesh( geometry, material );
-floor.material.side = THREE.DoubleSide;
-floor.rotation.x = Math.PI / 2;
+floor.material.side = THREE.BackSide;
 floor.position.set(0, 0, 0);
+floor.rotation.x = Math.PI / 2;
 scene.add( floor ); 
     
 var geometry = new BoxGeometry(1, 1, 1);
@@ -48,7 +49,29 @@ cube.castShadow = true;
 cube.receiveShadow = true;
 scene.add(cube);
 
-// adding floor
+var geometry = new BoxGeometry(8,5,8);
+var texture = new THREE.TextureLoader().load('./src/textures/BrickWall/Brick_Wall_017_basecolor.jpg');
+texture.repeat.set(4, 4);
+texture.wrapS = THREE.RepeatWrapping;
+texture.wrapT = THREE.RepeatWrapping;
+texture.repeat.set( 4, 4);
+var material = new THREE.MeshBasicMaterial({map: texture});
+var huis = new Mesh(geometry, material);
+huis.position.set(0, 2.5, -20);
+scene.add(huis);
+
+var geometry = new ConeGeometry(7, 2.5, 4, 1, false, Math.PI / 4);
+var texture = new THREE.TextureLoader().load('./src/textures/TerracottaRoof/Shingles_Terracotta_001_basecolor.jpg');
+texture.repeat.set(6, 6);
+texture.wrapS = THREE.RepeatWrapping;
+texture.wrapT = THREE.RepeatWrapping;
+texture.repeat.set( 6, 6);
+var material = new THREE.MeshBasicMaterial({map: texture});
+var dak = new Mesh(geometry, material);
+dak.position.set(0, 6.3, -20);
+scene.add(dak);
+
+// adding floor van martijn en sybren
 /*
 const planegeometry = new THREE.PlaneGeometry(200, 200, 1);
 
@@ -122,6 +145,7 @@ loader.load(
     // called when loading has errors
     msgerror
 );
+/*
 loader.load(
     './src/car0.gltf',
     function (gltf) {
@@ -170,6 +194,7 @@ loader.load(
     msg,
     msgerror
 );
+*/
 
 var ambient = new AmbientLight(0x404040, 10);
 scene.add(ambient);
