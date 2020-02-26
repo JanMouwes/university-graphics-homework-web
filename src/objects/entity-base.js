@@ -14,6 +14,7 @@ export default class EntityBase {
             this._pos.z
         )
     }
+
     /**
      * @param {string} resourceName
      * @param {number} scale
@@ -87,9 +88,6 @@ export default class EntityBase {
         const relativeVelocity = this.velocity.clone().multiplyScalar(deltaSeconds);
         this._pos.add(relativeVelocity);
 
-        console.log(this._minPosY);
-        console.log(this._pos);
-        
         if (this._pos.y < this._minPosY) {
             this._pos.y = this._minPosY;
         }
