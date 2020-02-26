@@ -97,19 +97,33 @@ const can = new SodaCan(canscale);
 can.init(loader, scene, new Vector3(1, 0, 0));
 
 const car0 = new EntityBase("car0.gltf", car0scale);
-car0.init(loader, scene, new Vector3(10, 1, 0));
+car0.init(loader, scene, new Vector3(10, 4, 0));
 
 const car1 = new EntityBase("car1.gltf", car1scale);
-car1.init(loader, scene, new Vector3(20, -3, 0));
+car1.init(loader, scene, new Vector3(20, 0, 0));
 
 const car2 = new EntityBase("car2.gltf", car2scale);
-car2.init(loader, scene, new Vector3(30, 3, 0));
+car2.init(loader, scene, new Vector3(30, 1.55, 0));
 
 const car3 = new EntityBase("car3.gltf", car3scale);
-car3.init(loader, scene, new Vector3(40, -1, 0));
+car3.init(loader, scene, new Vector3(40, 1.75, 0));
 
 const ambient = new AmbientLight(0x404040, 10);
 scene.add(ambient);
+
+window.addEventListener("keydown", (e)=> {
+    const obj = car0;
+
+    if (e.key === "ArrowDown") {
+        obj.pos.y -= .05;
+        obj.object3d.position.y -= .05;
+        console.log(obj.pos.y);
+    } else if (e.key === "ArrowUp") {
+        obj.pos.y += .05;
+        obj.object3d.position.y += .05;
+        console.log(obj.pos.y);
+    }
+});
 
 // directional - KEY LIGHT
 const keyLight = new THREE.DirectionalLight(0xdddddd, 10);
@@ -130,7 +144,7 @@ scene.add( fillLightHelper );
 */
 
 // directional - RIM LIGHT
-var rimLight = new DirectionalLight(0xdddddd, 5);
+const rimLight = new DirectionalLight(0xdddddd, 5);
 rimLight.position.set(-20, 80, -80);
 scene.add(rimLight);
 

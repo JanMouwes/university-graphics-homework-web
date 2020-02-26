@@ -2,6 +2,18 @@ import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {Vector3} from "three";
 
 export default class EntityBase {
+    get pos() {
+        return this._pos;
+    }
+
+    set pos(value) {
+        this._pos = value;
+        this.object3d.position.set(
+            this._pos.x,
+            this._pos.y,
+            this._pos.z
+        )
+    }
     /**
      * @param {string} resourceName
      * @param {number} scale
@@ -19,7 +31,7 @@ export default class EntityBase {
         /** @type {Vector3} */
         this.velocity = new Vector3();
 
-        this.pos = new Vector3();
+        this._pos = new Vector3();
     }
 
     /**
@@ -28,7 +40,7 @@ export default class EntityBase {
      * @param {Vector3} initialPosition
      */
     init(loader, scene, initialPosition) {
-        this.pos = initialPosition;
+        this._pos = initialPosition;
 
         const scale = this._scale;
 
@@ -71,14 +83,14 @@ export default class EntityBase {
         const deltaSeconds = (deltaMillis / 1000.0);
 
         const relativeVelocity = this.velocity.clone().multiplyScalar(deltaSeconds);
-        this.pos.add(relativeVelocity);
+        this._pos.add(relativeVelocity);
 
-        if (this.pos.y < 0) {
-            this.pos.y = 0;
+        if (this._pos.y < 0) {
+            this._pos.y = 0;
         }
 
         if (this._object3d) {
-            this._object3d.position.set(this.pos.x, this.pos.y, this.pos.z);
+            this._object3d.position.set(this._pos.x, this._pos.y, this._pos.z);
         }
     }
 
