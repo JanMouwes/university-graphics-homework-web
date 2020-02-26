@@ -43,6 +43,7 @@ var floor = new THREE.Mesh( geometry, material );
 floor.material.side = THREE.BackSide;
 floor.position.set(0, 0, 0);
 floor.rotation.x = Math.PI / 2;
+floor.receiveShadow = true;
 scene.add(floor); 
 
 const huis = new House(1);
@@ -131,8 +132,7 @@ keyLight.shadow = new DirectionalLightShadow(camera);
 keyLight.shadow.bias = 0.0001;
 keyLight.shadow.mapSize.width = 2048;
 keyLight.shadow.mapSize.height = 1024;
-
-//floor.receiveShadow = true;scene.add(keyLight);scene.add(cube);
+scene.add(keyLight);
 
 // Geen idee wat dit doet
 /*
