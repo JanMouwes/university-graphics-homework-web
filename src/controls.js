@@ -11,6 +11,13 @@ export default class MovementControls {
 
         this._isMouseDown = false;
 
+        /**
+         *
+         * @type {Map<string, boolean>}
+         * @private
+         */
+        this._keyState = new Map();
+
         this.keyDownHandler = this.keyDownHandler.bind(this);
         this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
     }
@@ -20,7 +27,7 @@ export default class MovementControls {
      */
     init(camera) {
         this._window.addEventListener("keydown", this.keyDownHandler);
-        this._window.addEventListener("keyup", () => (this._keyDown = false));
+        this._window.addEventListener("keyup", (e) => (this._keyState.set(e.code, false)));
 
         this._window.addEventListener("mousemove", this.mouseMoveHandler);
         this._window.addEventListener("mousedown", () => (this._isMouseDown = true));
@@ -38,16 +45,19 @@ export default class MovementControls {
         const displacement = this.velocity.clone().multiplyScalar(deltaMillis / 1000.0);
         const previousPosition = this._camera.position.clone();
 
-        if (!this._keyDown) {
-            // decay velocity
-            this.velocity.multiplyScalar(.8);
-            if (this.velocity.lengthSq() < 0.001) {
-                this.velocity.set(0, 0, 0);
-            }
+        // decay velocity
+        this.velocity.multiplyScalar(.8);
+        if (this.velocity.lengthSq() < 0.001) {
+            this.velocity.set(0, 0, 0);
         }
 
+        if (this._keyState.get("KeyA")) this.velocity.x = -5;
+        if (this._keyState.get("KeyD")) this.velocity.x = 5;
+        if (this._keyState.get("KeyW")) this.velocity.z = -5;
+        if (this._keyState.get("KeyS")) this.velocity.z = 5;
+
         this._camera.translateX(displacement.x);
-        this._camera.translateZ( displacement.z);
+        this._camera.translateZ(displacement.z);
 
         //  Ensure y stays the same
         if (this.lockY) {
@@ -56,12 +66,7 @@ export default class MovementControls {
     }
 
     keyDownHandler(e) {
-        if (e.code === "KeyA") this.velocity.x = -5;
-        else if (e.code === "KeyD") this.velocity.x = 5;
-        else if (e.code === "KeyW") this.velocity.z = -5;
-        else if (e.code === "KeyS") this.velocity.z = 5;
-
-        this._keyDown = true;
+        this._keyState.set(e.code, true);
     };
 
     /** @param {MouseEvent} e */
