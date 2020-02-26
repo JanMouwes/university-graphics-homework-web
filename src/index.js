@@ -46,6 +46,7 @@ var material = new MeshNormalMaterial();
 var cube = new Mesh(geometry, material);
 cube.castShadow = true;
 cube.receiveShadow = true;
+scene.add(cube);
 
 // adding floor
 /*
@@ -182,7 +183,6 @@ keyLight.shadow.bias = 0.0001;
 keyLight.shadow.mapSize.width = 2048;
 keyLight.shadow.mapSize.height = 1024;
 
-cube.castShadow = true;
 //floor.receiveShadow = true;scene.add(keyLight);scene.add(cube);
 
 // Geen idee wat dit doet
