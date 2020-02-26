@@ -10,13 +10,16 @@ import {
     Vector3,
     DirectionalLight,
     LightShadow,
-    ConeGeometry
+    ConeGeometry,
+    DirectionalLightShadow, 
+    Cache
 } from "three";
 import * as THREE from "three";
 import CameraControls from "./controls";
 import createSkybox from "./skybox";
 import SodaCan from "./objects/soda-can";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import EntityBase from "./objects/entity-base";
 
 // Create scene
 const scene = new Scene();
@@ -107,21 +110,13 @@ const skybox = createSkybox(settings.skybox);
 scene.add(skybox);
 
 // Instantiate a loader
-var loader = new GLTFLoader();
+const loader = new GLTFLoader();
 
-function msg(xhr) {
-    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-}
-
-function msgerror(error) {
-    console.log('An error happened');
-}
-
-var canscale = 0.01;
-var car0scale = 0.07;
-var car1scale = 0.012;
-var car2scale = 0.0045;
-var car3scale = 0.014;
+const canscale = 0.01;
+const car0scale = 0.07;
+const car1scale = 0.012;
+const car2scale = 0.0045;
+const car3scale = 0.014;
 
 // Load a glTF resource
 loader.load(
@@ -149,35 +144,23 @@ loader.load(
 loader.load(
     './src/car0.gltf',
     function (gltf) {
+    const can = new SodaCan(canscale);
+    can.init(loader, scene, new Vector3(1, 0, 0));
 
-        scene.add(gltf.scene);
+    const car0 = new EntityBase("car0.gltf", car0scale);
+    car0.init(loader, scene, new Vector3(10, 4, 0));
 
-        gltf.scene.scale.set(car0scale, car0scale, car0scale);
-        gltf.scene.position.set(10, 4, 0);
-    },
-    msg,
-    msgerror
-);
-loader.load(
-    './src/car1.gltf',
-    function (gltf) {
+    const car1 = new EntityBase("car1.gltf", car1scale);
+    car1.init(loader, scene, new Vector3(20, 0, 0));
 
-        scene.add(gltf.scene);
+    const car2 = new EntityBase("car2.gltf", car2scale);
+    car2.init(loader, scene, new Vector3(30, 1.55, 0));
 
-        gltf.scene.scale.set(car1scale, car1scale, car1scale);
-        gltf.scene.position.set(20, 1, 0);
-    },
-    msg,
-    msgerror
-);
-loader.load(
-    './src/car2.gltf',
-    function (gltf) {
+    const car3 = new EntityBase("car3.gltf", car3scale);
+    car3.init(loader, scene, new Vector3(40, 1.75, 0));
 
-        scene.add(gltf.scene);
-
-        gltf.scene.scale.set(car2scale, car2scale, car2scale);
-        gltf.scene.position.set(30, 3, 0);
+    gltf.scene.scale.set(car2scale, car2scale, car2scale);
+    gltf.scene.position.set(30, 3, 0);
     },
     msg,
     msgerror
@@ -196,14 +179,28 @@ loader.load(
 );
 */
 
-var ambient = new AmbientLight(0x404040, 10);
+const ambient = new AmbientLight(0x404040, 10);
 scene.add(ambient);
 
+window.addEventListener("keydown", (e)=> {
+    const obj = car0;
+
+    if (e.key === "ArrowDown") {
+        obj.pos.y -= .05;
+        obj.object3d.position.y -= .05;
+        console.log(obj.pos.y);
+    } else if (e.key === "ArrowUp") {
+        obj.pos.y += .05;
+        obj.object3d.position.y += .05;
+        console.log(obj.pos.y);
+    }
+});
+
 // directional - KEY LIGHT
-var keyLight = new THREE.DirectionalLight(0xdddddd, 10);
+const keyLight = new THREE.DirectionalLight(0xdddddd, 10);
 keyLight.position.set(-80, 60, 80);
 keyLight.castShadow = true;
-keyLight.shadow = new LightShadow( new PerspectiveCamera( 50, 1, 10, 2500 ) );
+keyLight.shadow = new DirectionalLightShadow(camera);
 keyLight.shadow.bias = 0.0001;
 keyLight.shadow.mapSize.width = 2048;
 keyLight.shadow.mapSize.height = 1024;
@@ -218,9 +215,9 @@ scene.add( fillLightHelper );
 */
 
 // directional - RIM LIGHT
-var rimLight = new DirectionalLight( 0xdddddd, 5 );
-rimLight.position.set( -20, 80, -80 );
-scene.add( rimLight );
+const rimLight = new DirectionalLight(0xdddddd, 5);
+rimLight.position.set(-20, 80, -80);
+scene.add(rimLight);
 
 const movement = new CameraControls(window);
 movement.init(camera);
@@ -233,14 +230,14 @@ const gameObjects = [];
 const GRAVITY = new Vector3(0, -9.81, 0);
 
 const shootCan = () => {
-    const newCan = new SodaCan(camera.position.clone(), .01);
+    const newCan = new SodaCan(.01);
 
     camera.getWorldDirection(newCan.velocity);
-    newCan.velocity = newCan.velocity.add(GRAVITY);
+    newCan.velocity = newCan.velocity.normalize().multiplyScalar(4).add(GRAVITY);
 
     console.log(newCan.velocity);
 
-    newCan.init(scene);
+    newCan.init(loader, scene, camera.position.clone());
     gameObjects.push(newCan);
 };
 
