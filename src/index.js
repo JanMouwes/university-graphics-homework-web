@@ -47,7 +47,13 @@ floor.receiveShadow = true;
 scene.add(floor); 
 
 const huis = new House(1);
-huis.init(scene, new Vector3(0, 0, -20));
+huis.init(scene, new Vector3(-20, 0, -20));
+
+const huisBig = new House(1.5);
+huisBig.init(scene, new Vector3(0, 0, -20));
+
+const huisHuge = new House(2);
+huisHuge.init(scene, new Vector3(20, 0, -20));
 
 var geometry = new BoxGeometry(1, 1, 1);
 var material = new MeshNormalMaterial();
@@ -55,7 +61,7 @@ var cube = new Mesh(geometry, material);
 cube.position.set(0, 0.5, 0);
 cube.castShadow = true;
 cube.receiveShadow = true;
-scene.add(cube);
+// scene.add(cube);
 
 camera.position.x = cameraSettings["start-position"].x;
 camera.position.y = cameraSettings["start-position"].y;
