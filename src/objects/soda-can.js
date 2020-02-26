@@ -7,6 +7,6 @@ export default class SodaCan extends EntityBase {
      * @param {number} scale
      */
     constructor(scale) {
-        super("can.gltf", scale);
+        super("can.gltf", scale, 0.01);
     }
 }

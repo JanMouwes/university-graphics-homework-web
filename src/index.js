@@ -102,17 +102,19 @@ const car3scale = 0.014;
 const can = new SodaCan(canscale);
 can.init(loader, scene, new Vector3(1, 0.1, 0));
 
-const car0 = new EntityBase("car0.gltf", car0scale);
+/*
+const car0 = new EntityBase("car0.gltf", car0scale, 4);
 car0.init(loader, scene, new Vector3(10, 4, 0));
 
-const car1 = new EntityBase("car1.gltf", car1scale);
+const car1 = new EntityBase("car1.gltf", car1scale, 0);
 car1.init(loader, scene, new Vector3(20, 0, 0));
 
-const car2 = new EntityBase("car2.gltf", car2scale);
+const car2 = new EntityBase("car2.gltf", car2scale, 1.55);
 car2.init(loader, scene, new Vector3(30, 1.55, 0));
 
-const car3 = new EntityBase("car3.gltf", car3scale);
+const car3 = new EntityBase("car3.gltf", car3scale, 1.75);
 car3.init(loader, scene, new Vector3(40, 1.75, 0));
+*/
 
 const ambient = new AmbientLight(0x404040, 10);
 scene.add(ambient);
@@ -129,12 +131,12 @@ window.addEventListener("keydown", (e)=> {
         obj.object3d.position.y += .05;
         console.log(obj.pos.y);
     }else if (e.key === "ArrowRight") {
-        obj.pos.x -= .05;
-        obj.object3d.position.x -= .05;
-        console.log(obj.pos.x);
-    } else if (e.key === "ArrowLeft") {
         obj.pos.x += .05;
         obj.object3d.position.x += .05;
+        console.log(obj.pos.x);
+    } else if (e.key === "ArrowLeft") {
+        obj.pos.x -= .05;
+        obj.object3d.position.x -= .05;
         console.log(obj.pos.x);
     }
 });

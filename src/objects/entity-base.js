@@ -17,10 +17,12 @@ export default class EntityBase {
     /**
      * @param {string} resourceName
      * @param {number} scale
+     * @param {number} minPosY
      */
-    constructor(resourceName, scale) {
+    constructor(resourceName, scale, minPosY) {
         this._resourceName = resourceName;
         this._scale = scale;
+        this._minPosY = minPosY;
 
         /**
          * @type {Scene | null}
@@ -85,8 +87,11 @@ export default class EntityBase {
         const relativeVelocity = this.velocity.clone().multiplyScalar(deltaSeconds);
         this._pos.add(relativeVelocity);
 
-        if (this._pos.y < 0) {
-            this._pos.y = 0;
+        console.log(this._minPosY);
+        console.log(this._pos);
+        
+        if (this._pos.y < this._minPosY) {
+            this._pos.y = this._minPosY;
         }
 
         if (this._object3d) {
