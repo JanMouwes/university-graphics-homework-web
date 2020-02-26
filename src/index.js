@@ -9,7 +9,6 @@ import {
     AmbientLight,
     Vector3,
     DirectionalLight,
-    LightShadow,
     ConeGeometry,
     DirectionalLightShadow, 
     Cache
@@ -48,6 +47,7 @@ scene.add( floor );
 var geometry = new BoxGeometry(1, 1, 1);
 var material = new MeshNormalMaterial();
 var cube = new Mesh(geometry, material);
+cube.position.set(0, 0.5, 0);
 cube.castShadow = true;
 cube.receiveShadow = true;
 scene.add(cube);
@@ -73,25 +73,6 @@ var material = new THREE.MeshBasicMaterial({map: texture});
 var dak = new Mesh(geometry, material);
 dak.position.set(0, 6.3, -20);
 scene.add(dak);
-
-// adding floor van martijn en sybren
-/*
-const planegeometry = new THREE.PlaneGeometry(200, 200, 1);
-
-const colorMap = new THREE.TextureLoader().load('./src/textures/BrickWall/Brick_Wall_017_basecolor.jpg');
-colorMap.wrapS = THREE.RepeatWrapping;
-colorMap.wrapT = THREE.RepeatWrapping;
-colorMap.repeat.set(24, 24);
-
-var materialbrick = new THREE.MeshStandardMaterial({
-    map: colorMap
-});
-var mesh = new THREE.Mesh(planegeometry, materialbrick);
-mesh.material.side = THREE.DoubleSide;
-mesh.rotation.x = Math.PI / 2;
-
-scene.add(mesh);
-*/
 
 camera.position.x = cameraSettings["start-position"].x;
 camera.position.y = cameraSettings["start-position"].y;
@@ -119,30 +100,25 @@ const car2scale = 0.0045;
 const car3scale = 0.014;
 
 const can = new SodaCan(canscale);
-can.init(loader, scene, new Vector3(1, 0, 0));
+can.init(loader, scene, new Vector3(1, 0.1, 0));
 
-/*
-    const can = new SodaCan(canscale);
-    can.init(loader, scene, new Vector3(1, 0, 0));
+const car0 = new EntityBase("car0.gltf", car0scale);
+car0.init(loader, scene, new Vector3(10, 4, 0));
 
-    const car0 = new EntityBase("car0.gltf", car0scale);
-    car0.init(loader, scene, new Vector3(10, 4, 0));
+const car1 = new EntityBase("car1.gltf", car1scale);
+car1.init(loader, scene, new Vector3(20, 0, 0));
 
-    const car1 = new EntityBase("car1.gltf", car1scale);
-    car1.init(loader, scene, new Vector3(20, 0, 0));
+const car2 = new EntityBase("car2.gltf", car2scale);
+car2.init(loader, scene, new Vector3(30, 1.55, 0));
 
-    const car2 = new EntityBase("car2.gltf", car2scale);
-    car2.init(loader, scene, new Vector3(30, 1.55, 0));
-
-    const car3 = new EntityBase("car3.gltf", car3scale);
-    car3.init(loader, scene, new Vector3(40, 1.75, 0));
-*/
+const car3 = new EntityBase("car3.gltf", car3scale);
+car3.init(loader, scene, new Vector3(40, 1.75, 0));
 
 const ambient = new AmbientLight(0x404040, 10);
 scene.add(ambient);
 
 window.addEventListener("keydown", (e)=> {
-    const obj = car0;
+    const obj = can;
 
     if (e.key === "ArrowDown") {
         obj.pos.y -= .05;
@@ -152,6 +128,14 @@ window.addEventListener("keydown", (e)=> {
         obj.pos.y += .05;
         obj.object3d.position.y += .05;
         console.log(obj.pos.y);
+    }else if (e.key === "ArrowRight") {
+        obj.pos.x -= .05;
+        obj.object3d.position.x -= .05;
+        console.log(obj.pos.x);
+    } else if (e.key === "ArrowLeft") {
+        obj.pos.x += .05;
+        obj.object3d.position.x += .05;
+        console.log(obj.pos.x);
     }
 });
 
