@@ -10,8 +10,15 @@ import {
     Vector3,
     DirectionalLight,
     ConeGeometry,
-    DirectionalLightShadow, 
-    Cache
+    DirectionalLightShadow,
+    Color,
+    CylinderGeometry,
+    SphereGeometry,
+    MeshBasicMaterial,
+    MeshPhysicalMaterial,
+    MeshStandardMaterial,
+    MeshPhongMaterial,
+    PointLight,
 } from "three";
 import * as THREE from "three";
 import CameraControls from "./controls";
@@ -19,6 +26,7 @@ import createSkybox from "./skybox";
 import SodaCan from "./objects/soda-can";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import EntityBase from "./objects/entity-base";
+import StreetLamp from "./objects/street-lamp";
 
 // Create scene
 const scene = new Scene();
@@ -36,14 +44,14 @@ const camera = new PerspectiveCamera(
     cameraSettings["plane-far"]  // far — Camera frustum far plane.
 );
 
-var geometry = new THREE.PlaneGeometry( 1000, 1000, 10, 10 );
-var material = new THREE.MeshBasicMaterial( { color: 0xffcc00, wireframe: false } );
-var floor = new THREE.Mesh( geometry, material );
+var geometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+var material = new THREE.MeshBasicMaterial({color: 0xffcc00, wireframe: false});
+var floor = new THREE.Mesh(geometry, material);
 floor.material.side = THREE.BackSide;
 floor.position.set(0, 0, 0);
 floor.rotation.x = Math.PI / 2;
-scene.add( floor ); 
-    
+scene.add(floor);
+
 var geometry = new BoxGeometry(1, 1, 1);
 var material = new MeshNormalMaterial();
 var cube = new Mesh(geometry, material);
@@ -52,12 +60,12 @@ cube.castShadow = true;
 cube.receiveShadow = true;
 scene.add(cube);
 
-var geometry = new BoxGeometry(8,5,8);
+var geometry = new BoxGeometry(8, 5, 8);
 var texture = new THREE.TextureLoader().load('./src/resources/models/textures/BrickWall/Brick_Wall_017_basecolor.jpg');
 texture.repeat.set(4, 4);
 texture.wrapS = THREE.RepeatWrapping;
 texture.wrapT = THREE.RepeatWrapping;
-texture.repeat.set( 4, 4);
+texture.repeat.set(4, 4);
 var material = new THREE.MeshBasicMaterial({map: texture});
 var huis = new Mesh(geometry, material);
 huis.position.set(0, 2.5, -20);
@@ -68,11 +76,13 @@ var texture = new THREE.TextureLoader().load('./src/resources/models/textures/Te
 texture.repeat.set(6, 6);
 texture.wrapS = THREE.RepeatWrapping;
 texture.wrapT = THREE.RepeatWrapping;
-texture.repeat.set( 6, 6);
+texture.repeat.set(6, 6);
 var material = new THREE.MeshBasicMaterial({map: texture});
 var dak = new Mesh(geometry, material);
 dak.position.set(0, 6.3, -20);
 scene.add(dak);
+
+
 
 camera.position.x = cameraSettings["start-position"].x;
 camera.position.y = cameraSettings["start-position"].y;
@@ -94,17 +104,20 @@ scene.add(skybox);
 const loader = new GLTFLoader();
 
 const canscale = 0.01;
-const car0scale = 0.07;
+const car0scale = 0.05;
 const car1scale = 0.012;
 const car2scale = 0.0045;
 const car3scale = 0.014;
 
+const streetLamp = new StreetLamp();
+streetLamp.init(loader, scene, new Vector3(0, 0, -10));
+
 const can = new SodaCan(canscale);
 can.init(loader, scene, new Vector3(1, 0.1, 0));
 
-/*
 const car0 = new EntityBase("car0.gltf", car0scale, 4);
-car0.init(loader, scene, new Vector3(10, 4, 0));
+car0.init(loader, scene, new Vector3(10, 3, 0));
+/*
 
 const car1 = new EntityBase("car1.gltf", car1scale, 0);
 car1.init(loader, scene, new Vector3(20, 0, 0));
@@ -117,9 +130,9 @@ car3.init(loader, scene, new Vector3(40, 1.75, 0));
 */
 
 const ambient = new AmbientLight(0x404040, 10);
-scene.add(ambient);
+// scene.add(ambient);
 
-window.addEventListener("keydown", (e)=> {
+window.addEventListener("keydown", (e) => {
     const obj = can;
 
     if (e.key === "ArrowDown") {
@@ -130,7 +143,7 @@ window.addEventListener("keydown", (e)=> {
         obj.pos.y += .05;
         obj.object3d.position.y += .05;
         console.log(obj.pos.y);
-    }else if (e.key === "ArrowRight") {
+    } else if (e.key === "ArrowRight") {
         obj.pos.x += .05;
         obj.object3d.position.x += .05;
         console.log(obj.pos.x);
@@ -142,13 +155,13 @@ window.addEventListener("keydown", (e)=> {
 });
 
 // directional - KEY LIGHT
-const keyLight = new THREE.DirectionalLight(0xdddddd, 10);
-keyLight.position.set(-80, 60, 80);
-keyLight.castShadow = true;
-keyLight.shadow = new DirectionalLightShadow(camera);
-keyLight.shadow.bias = 0.0001;
-keyLight.shadow.mapSize.width = 2048;
-keyLight.shadow.mapSize.height = 1024;
+// const keyLight = new THREE.DirectionalLight(0xdddddd, 10);
+// keyLight.position.set(-80, 60, 80);
+// keyLight.castShadow = true;
+// keyLight.shadow = new DirectionalLightShadow(camera);
+// keyLight.shadow.bias = 0.0001;
+// keyLight.shadow.mapSize.width = 2048;
+// keyLight.shadow.mapSize.height = 1024;
 
 //floor.receiveShadow = true;scene.add(keyLight);scene.add(cube);
 
@@ -160,9 +173,9 @@ scene.add( fillLightHelper );
 */
 
 // directional - RIM LIGHT
-const rimLight = new DirectionalLight(0xdddddd, 5);
-rimLight.position.set(-20, 80, -80);
-scene.add(rimLight);
+// const rimLight = new DirectionalLight(0xdddddd, 5);
+// rimLight.position.set(-20, 80, -80);
+// scene.add(rimLight);
 
 const movement = new CameraControls(window);
 movement.init(camera);
