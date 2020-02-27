@@ -3,21 +3,24 @@ import {
     Scene,
     PerspectiveCamera,
     BoxGeometry,
-    MeshNormalMaterial,
+    ConeGeometry,
     Mesh,
     WebGLRenderer,
     AmbientLight,
     Vector3,
     DirectionalLight,
-    ConeGeometry,
     DirectionalLightShadow,
     Color,
+    MeshNormalMaterial,
     CylinderGeometry,
     SphereGeometry,
     MeshBasicMaterial,
     MeshPhysicalMaterial,
     MeshStandardMaterial,
     MeshPhongMaterial,
+    MeshLambertMaterial,
+    TextureLoader,
+    RepeatWrapping,
     PointLight,
 } from "three";
 import * as THREE from "three";
@@ -45,38 +48,58 @@ const camera = new PerspectiveCamera(
     cameraSettings["plane-far"]  // far — Camera frustum far plane.
 );
 
-var geometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
-var material = new THREE.MeshBasicMaterial({color: 0xffcc00, wireframe: false});
-var floor = new THREE.Mesh(geometry, material);
-floor.material.side = THREE.BackSide;
-floor.position.set(0, 0, 0);
-floor.rotation.x = Math.PI / 2;
-floor.receiveShadow = true;scene.add(floor);
+// Create renderer
+const renderer = new WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFShadowMap;
+
+// Create an ambient light
+const ambient = new AmbientLight(0x404040, 1);
+scene.add(ambient);
+
+const light = new THREE.HemisphereLight(0xffffff, 0xffffff, 1);
+light.castShadow = true;
+scene.add(light);
+
+// Initializing skybox
+const skybox = createSkybox(settings.skybox);
+scene.add(skybox);
+
 const huis = new House(1);
 huis.init(scene, new Vector3(0, 0, -20));
+
 var geometry = new BoxGeometry(1, 1, 1);
-var material = new MeshNormalMaterial();
+var material = new MeshPhongMaterial( {
+    color: 0x000000,
+    castShadow: true,
+    receiveShadow: true,
+});
 var cube = new Mesh(geometry, material);
-cube.position.set(0, 0.5, 0);
-cube.castShadow = true;
-cube.receiveShadow = true;
-// scene.add(cube);
+cube.position.set(0, 1, -15);
+scene.add(cube);
+
+var geometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+var texture = new TextureLoader().load('./src/resources/textures/Grass.jpg');
+texture.repeat.set(1000, 1000);
+texture.wrapS = RepeatWrapping;
+texture.wrapT = RepeatWrapping;
+var material = new THREE.MeshStandardMaterial({map: texture, wireframe: false});
+var floor = new THREE.Mesh(geometry, material);
+floor.material.side = THREE.DoubleSide;
+floor.rotation.x = Math.PI / 2;
+floor.receiveShadow = true;
+scene.add(floor);
+
+// debug
+var helper = new THREE.HemisphereLightHelper(light, 100);
+scene.add(helper);
 
 camera.position.x = cameraSettings["start-position"].x;
 camera.position.y = cameraSettings["start-position"].y;
 camera.position.z = cameraSettings["start-position"].z;
 
-// Create renderer
-const renderer = new WebGLRenderer({antialias: true, alpha: true});
-renderer.setSize(window.innerWidth, window.innerHeight);
-
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.BasicShadowMap;
-
-renderer.render(scene, camera);
-
-const skybox = createSkybox(settings.skybox);
-scene.add(skybox);
 
 // Instantiate a loader
 const loader = new GLTFLoader();
@@ -107,9 +130,6 @@ const car3 = new EntityBase("car3.gltf", car3scale, 1.75);
 car3.init(loader, scene, new Vector3(40, 1.75, 0));
 */
 
-const ambient = new AmbientLight(0x404040, 10);
-// scene.add(ambient);
-
 window.addEventListener("keydown", (e) => {
     const obj = can;
 
@@ -132,28 +152,7 @@ window.addEventListener("keydown", (e) => {
     }
 });
 
-// directional - KEY LIGHT
-// const keyLight = new THREE.DirectionalLight(0xdddddd, 10);
-// keyLight.position.set(-80, 60, 80);
-// keyLight.castShadow = true;
-// keyLight.shadow = new DirectionalLightShadow(camera);
-// keyLight.shadow.bias = 0.0001;
-// keyLight.shadow.mapSize.width = 2048;
-// keyLight.shadow.mapSize.height = 1024;
-// scene.add(keyLight);
-
-// Geen idee wat dit doet
-/*
-var fillLight = new THREE.DirectionalLight(0xffcc00, 10);
-var fillLightHelper = new THREE.DirectionalLightHelper( fillLight, 1 );
-scene.add( fillLightHelper );
-*/
-
-// directional - RIM LIGHT
-const rimLight = new DirectionalLight(0xFFFFFF, 60);
-rimLight.position.set(-20, 80, -80);
-
-scene.add(rimLight);
+renderer.render(scene, camera);
 
 const movement = new CameraControls(window);
 movement.init(camera);

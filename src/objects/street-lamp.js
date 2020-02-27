@@ -1,7 +1,7 @@
 import EntityBase from "./entity-base";
 import {
     Color,
-    CylinderGeometry,
+   CameraHelper, CylinderGeometry,
     Mesh,
     MeshBasicMaterial,
     MeshStandardMaterial,
@@ -17,8 +17,10 @@ export default class StreetLamp extends EntityBase {
 
     init(loader, scene, initialPosition) {
         const poleGeometry = new CylinderGeometry(.02, .1, 4, 60);
-        const poleMaterial = new MeshStandardMaterial({
-            color: new Color(0xAAAAAA)
+        const poleMaterial = new MeshPhongMaterial({
+            color: new Color(0x909090),
+            castShadow: true,
+            shininess: 40
         });
         const pole = new Mesh(poleGeometry, poleMaterial);
         pole.position.set(initialPosition.x, 2 + initialPosition.y, initialPosition.z);
@@ -26,6 +28,7 @@ export default class StreetLamp extends EntityBase {
 
         const poleLampGeometry = new SphereGeometry(.3, 60, 60,);
         const poleLampMaterial = new MeshBasicMaterial({
+            castShadow: true,
             opacity: .7,
             transparent: true
         });
@@ -34,8 +37,12 @@ export default class StreetLamp extends EntityBase {
         poleLamp.position.set(initialPosition.x, 4.1 + initialPosition.y, initialPosition.z);
         scene.add(poleLamp);
 
-        const light = new PointLight(0xAAAA00, 50, 25);
+        const light = new PointLight(0xAAAA00, 2, 25);
         light.position.set(initialPosition.x, 4.1 + initialPosition.y, initialPosition.z);
+        light.castShadow = true;
         scene.add(light);
+        // debug
+        var helper = new CameraHelper(light.shadow.camera);
+        scene.add(helper);
     }
 }
