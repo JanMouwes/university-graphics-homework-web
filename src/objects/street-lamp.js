@@ -4,7 +4,7 @@ import {
    CameraHelper, CylinderGeometry,
     Mesh,
     MeshBasicMaterial,
-    MeshStandardMaterial,
+    MeshPhongMaterial,
     PointLight,
     SphereGeometry
 } from "three";
