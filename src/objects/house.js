@@ -37,7 +37,7 @@ export default class House {
       texture.wrapS = RepeatWrapping;
       texture.wrapT = RepeatWrapping;
       texture.repeat.set( repeat, repeat);
-      var material = new MeshLambertMaterial({map: texture});
+      var material = new MeshPhongMaterial({map: texture, shininess: 0});
       var huisBase = new Mesh(geometry, material);
       huisBase.receiveShadow = true;
       huisBase.castShadow = true;
@@ -52,7 +52,7 @@ export default class House {
       texture.wrapT = RepeatWrapping;
       texture.repeat.set( repeatDak, repeatDak);
       
-      var material = new MeshBasicMaterial({
+      var material = new MeshPhongMaterial({
         map: texture,
         receiveShadow: true,
         castShadow: true
@@ -66,7 +66,7 @@ export default class House {
 
       // Adding the door of the house
       var geometry = new BoxGeometry(1.5, 2, 0.25);
-      var material = new MeshBasicMaterial( { color: 0xffffff, wireframe: false });
+      var material = new MeshBasicMaterial( { color: 0x663300, wireframe: false });
       var huisDeur = new Mesh(geometry, material);
       
       huisDeur.position.set(huisBase.position.x + (5 * scale / 2) - 1.5, 1, huisBase.position.z + (5 * scale / 2));
@@ -80,7 +80,7 @@ export default class House {
       const width = 2 * scale;
       for (i = 0; i < (4 * scale) - 1; i++) {
         var geometry = new BoxGeometry(1.25, 1.25, 0.25);
-        var material = new MeshBasicMaterial( { color: 0x000000, wireframe: false });
+        var material = new MeshPhongMaterial( { color: 0x99ccff, wireframe: false });
         var huisRaam = new Mesh(geometry, material);
 
         if (i%2) {
