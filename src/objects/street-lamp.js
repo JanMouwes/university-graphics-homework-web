@@ -29,7 +29,7 @@ export default class StreetLamp extends EntityBase {
         poleLamp.position.set(initialPosition.x, 4.1 + initialPosition.y, initialPosition.z);
         scene.add(poleLamp);
 
-        const light = new PointLight(0xAAAA00, 50, 25);
+        const light = new PointLight(0xAAAA00, 2, 25);
         light.position.set(initialPosition.x, 4.1 + initialPosition.y, initialPosition.z);
         light.castShadow = true;
         scene.add(light);

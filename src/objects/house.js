@@ -52,7 +52,11 @@ export default class House {
       texture.wrapT = RepeatWrapping;
       texture.repeat.set( repeatDak, repeatDak);
       
-      var material = new MeshBasicMaterial({map: texture});
+      var material = new MeshBasicMaterial({
+        map: texture,
+        receiveShadow: true,
+        castShadow: true
+      });
       
       var huisDak = new Mesh(geometry, material);
       

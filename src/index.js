@@ -3,21 +3,24 @@ import {
     Scene,
     PerspectiveCamera,
     BoxGeometry,
-    MeshNormalMaterial,
+    ConeGeometry,
     Mesh,
     WebGLRenderer,
     AmbientLight,
     Vector3,
     DirectionalLight,
-    ConeGeometry,
     DirectionalLightShadow,
     Color,
+    MeshNormalMaterial,
     CylinderGeometry,
     SphereGeometry,
     MeshBasicMaterial,
     MeshPhysicalMaterial,
     MeshStandardMaterial,
     MeshPhongMaterial,
+    MeshLambertMaterial,
+    TextureLoader,
+    RepeatWrapping,
     PointLight,
 } from "three";
 import * as THREE from "three";
@@ -53,11 +56,10 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
 
 // Create an ambient light
-const ambient = new AmbientLight(0x404040, 10);
+const ambient = new AmbientLight(0x404040, 1);
 scene.add(ambient);
 
-const light = new THREE.HemisphereLight(0xffffff, 0x000000, 1);
-light.position.set(0, 1, 0);
+const light = new THREE.HemisphereLight(0xffffff, 0xffffff, 1);
 light.castShadow = true;
 scene.add(light);
 
@@ -79,7 +81,11 @@ cube.position.set(0, 1, -15);
 scene.add(cube);
 
 var geometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
-var material = new THREE.MeshStandardMaterial({color: 0x000000, wireframe: false});
+var texture = new TextureLoader().load('./src/resources/textures/Grass.jpg');
+texture.repeat.set(1000, 1000);
+texture.wrapS = RepeatWrapping;
+texture.wrapT = RepeatWrapping;
+var material = new THREE.MeshStandardMaterial({map: texture, wireframe: false});
 var floor = new THREE.Mesh(geometry, material);
 floor.material.side = THREE.DoubleSide;
 floor.rotation.x = Math.PI / 2;
