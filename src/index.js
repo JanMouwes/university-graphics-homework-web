@@ -2,26 +2,11 @@ import * as settings from "./settings.json";
 import {
     Scene,
     PerspectiveCamera,
-    BoxGeometry,
-    ConeGeometry,
-    Mesh,
     WebGLRenderer,
     AmbientLight,
     Vector3,
-    DirectionalLight,
-    DirectionalLightShadow,
-    Color,
-    MeshNormalMaterial,
-    CylinderGeometry,
-    SphereGeometry,
-    MeshBasicMaterial,
-    MeshPhysicalMaterial,
-    MeshStandardMaterial,
-    MeshPhongMaterial,
-    MeshLambertMaterial,
     TextureLoader,
     RepeatWrapping,
-    PointLight,
     Euler
 } from "three";
 import * as THREE from "three";
@@ -60,9 +45,9 @@ renderer.shadowMap.type = THREE.PCFShadowMap;
 const ambient = new AmbientLight(0x9ce5ff, 0.4);
 scene.add(ambient);
 
-// Adding an hemispherelight to light everything up
-const light = new THREE.HemisphereLight(0xffffff, 0xffffff, 1);
-scene.add(light);
+// Adding a sun to light everything up
+const sun = new THREE.HemisphereLight(0xffffff, 0xffffff, 1);
+scene.add(sun);
 
 // Adding an directionallight which acts as an sun
 const directlight = new THREE.DirectionalLight(0x99ccff, 0.1);
