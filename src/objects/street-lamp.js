@@ -42,8 +42,5 @@ export default class StreetLamp extends EntityBase {
         light.position.set(initialPosition.x, 3.3 + initialPosition.y, initialPosition.z);
         light.castShadow = true;
         scene.add(light);
-        // debug
-        var helper = new CameraHelper(light.shadow.camera);
-        scene.add(helper);
     }
 }

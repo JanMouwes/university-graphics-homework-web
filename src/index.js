@@ -130,8 +130,8 @@ const car1 = new EntityBase("car1.gltf", car1scale, 0);
 car1.init(loader, scene, new Vector3(-5, 0.1, -20));
 
 
-const car3 = new EntityBase("car3.gltf", car3scale, 1.75);
-car3.init(loader, scene, new Vector3(40, 1.75, 0));
+const bike = new EntityBase("car3.gltf", car3scale, 1.75);
+bike.init(loader, scene, new Vector3(40, 1.75, 0));
 
 /**
  * @param {EntityBase} owner
@@ -160,46 +160,7 @@ const followObject = (owner, target, offset = new Vector3(), rotationOffset = ne
     );
 };
 
-car3.update = followObject(car3, camera, new Vector3(0, -1.8, 0), new Euler(0, -Math.PI/2, 0));
-
-/*
-const car3 = new EntityBase("car3.gltf", car3scale, 1.75);
-car3.init(loader, scene, new Vector3(14, 0.76, -16.5));
-
-/*  Old cars, don't use them anymore
-const car0 = new EntityBase("car0.gltf", car0scale, 4);
-car0.init(loader, scene, new Vector3(10, 3, 0));
-
-const car1 = new EntityBase("car1.gltf", car1scale, 0);
-car1.init(loader, scene, new Vector3(20, 0, 0));
-
-const car2 = new EntityBase("car2.gltf", car2scale, 1.55);
-car2.init(loader, scene, new Vector3(30, 1.55, 0));
-
-
-*/
-
-window.addEventListener("keydown", (e) => {
-    const obj = streetLamp;
-
-    if (e.key === "ArrowDown") {
-        obj.pos.y -= .05;
-        obj.object3d.position.y -= .05;
-        console.log(obj.pos.y);
-    } else if (e.key === "ArrowUp") {
-        obj.pos.y += .05;
-        obj.object3d.position.y += .05;
-        console.log(obj.pos.y);
-    } else if (e.key === "ArrowRight") {
-        obj.pos.x += .05;
-        obj.object3d.position.x += .05;
-        console.log(obj.pos.x);
-    } else if (e.key === "ArrowLeft") {
-        obj.pos.x -= .05;
-        obj.object3d.position.x -= .05;
-        console.log(obj.pos.x);
-    }
-});
+bike.update = followObject(bike, camera, new Vector3(0, -1, 0), new Euler(0, -Math.PI/2, 0));
 
 renderer.render(scene, camera);
 
@@ -213,7 +174,7 @@ const gameObjects = [];
 
 const GRAVITY = new Vector3(0, -9.81, 0);
 
-gameObjects.push(car3);
+gameObjects.push(bike);
 
 const shootCan = () => {
     const newCan = new SodaCan(.01);
