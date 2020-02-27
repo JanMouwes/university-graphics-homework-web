@@ -140,7 +140,7 @@ window.addEventListener("keydown", (e) => {
 // keyLight.shadow.bias = 0.0001;
 // keyLight.shadow.mapSize.width = 2048;
 // keyLight.shadow.mapSize.height = 1024;
-scene.add(keyLight);
+// scene.add(keyLight);
 
 // Geen idee wat dit doet
 /*
