@@ -6,7 +6,9 @@ import {
     ConeGeometry,
     TextureLoader,
     RepeatWrapping,
-    MeshBasicMaterial
+    MeshBasicMaterial,
+    MeshPhongMaterial,
+    MeshLambertMaterial
 } from "three";
 
 export default class House {
@@ -35,8 +37,10 @@ export default class House {
       texture.wrapS = RepeatWrapping;
       texture.wrapT = RepeatWrapping;
       texture.repeat.set( repeat, repeat);
-      var material = new MeshBasicMaterial({map: texture});
+      var material = new MeshLambertMaterial({map: texture});
       var huisBase = new Mesh(geometry, material);
+      huisBase.receiveShadow = true;
+      huisBase.castShadow = true;
       huisBase.position.set(this._pos.x, this._pos.y + (5 * scale / 2), this._pos.z);
       scene.add(huisBase);
       
