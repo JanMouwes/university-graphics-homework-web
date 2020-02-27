@@ -68,24 +68,21 @@ export default class House {
       // Adding the windows of the house
       console.log('start');
       var i;
-      var j = 1;
       var floor = 0;
       const width = 2 * scale;
-      for (i = 1; i < (4 * scale * scale); i++) {
+      for (i = 0; i < (4 * scale) - 1; i++) {
         var geometry = new BoxGeometry(1.25, 1.25, 0.25);
         var material = new MeshBasicMaterial( { color: 0x000000, wireframe: false });
         var huisRaam = new Mesh(geometry, material);
 
-        if (i%width == 0 && i !=0) {
-          j = 1;
+        if (i%2) {
           floor += 1;
           console.log('floor: ' + floor);
-          huisRaam.position.set(huisBase.position.x + ((5 * scale / width) * j) - 1.5, 1.375 + (2.5 * floor), huisBase.position.z + (5 * scale / 2));
+          huisRaam.position.set(huisBase.position.x + (5 * scale / width) - 1.5, 1.375 + (2.5 * floor), huisBase.position.z + (5 * scale / 2));
         } else {
-          huisRaam.position.set(huisBase.position.x - ((5 * scale / width) * j) + 1.5, 1.375 + (2.5 * floor), huisBase.position.z + (5 * scale / 2));
+          huisRaam.position.set(huisBase.position.x - (5 * scale / width) + 1.5, 1.375 + (2.5 * floor), huisBase.position.z + (5 * scale / 2));
         }
         console.log(i);
-        j++;
 
         console.log(huisRaam.position);
         scene.add(huisRaam);

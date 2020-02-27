@@ -47,13 +47,7 @@ floor.receiveShadow = true;
 scene.add(floor); 
 
 const huis = new House(1);
-huis.init(scene, new Vector3(-20, 0, -20));
-
-const huisBig = new House(1.5);
-huisBig.init(scene, new Vector3(0, 0, -20));
-
-const huisHuge = new House(2);
-huisHuge.init(scene, new Vector3(20, 0, -20));
+huis.init(scene, new Vector3(0, 0, -20));
 
 var geometry = new BoxGeometry(1, 1, 1);
 var material = new MeshNormalMaterial();
