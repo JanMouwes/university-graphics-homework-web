@@ -56,29 +56,22 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
 
 // Create an ambient light
-const ambient = new AmbientLight(0x404040, 1);
+const ambient = new AmbientLight(0x9ce5ff, 0.4);
 scene.add(ambient);
 
+// Adding an hemispherelight to light everything up
 const light = new THREE.HemisphereLight(0xffffff, 0xffffff, 1);
-light.castShadow = true;
 scene.add(light);
+
+// Adding an directionallight which acts as an sun
+const directlight = new THREE.DirectionalLight(0x99ccff, 0.1);
+directlight.position.set( -60, 120, -60);
+directlight.castShadow = true;
+scene.add(directlight);
 
 // Initializing skybox
 const skybox = createSkybox(settings.skybox);
 scene.add(skybox);
-
-const huis = new House(1);
-huis.init(scene, new Vector3(0, 0, -20));
-
-var geometry = new BoxGeometry(1, 1, 1);
-var material = new MeshPhongMaterial( {
-    color: 0x000000,
-    castShadow: true,
-    receiveShadow: true,
-});
-var cube = new Mesh(geometry, material);
-cube.position.set(0, 1, -15);
-scene.add(cube);
 
 var geometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
 var texture = new TextureLoader().load('./src/resources/textures/Grass.jpg');
@@ -92,42 +85,58 @@ floor.rotation.x = Math.PI / 2;
 floor.receiveShadow = true;
 scene.add(floor);
 
-// debug
-var helper = new THREE.HemisphereLightHelper(light, 100);
-scene.add(helper);
+var geometry = new THREE.PlaneGeometry(1000, 5, 10, 10);
+var texture = new TextureLoader().load('./src/resources/textures/asphalt.jpg');
+texture.repeat.set(1000, 5);
+texture.wrapS = RepeatWrapping;
+texture.wrapT = RepeatWrapping;
+var material = new THREE.MeshStandardMaterial({map: texture, wireframe: false});
+var road = new THREE.Mesh(geometry, material);
+road.position.set(0,0.1,-10);
+road.material.side = THREE.DoubleSide;
+road.rotation.x = Math.PI / 2;
+road.receiveShadow = true;
+scene.add(road);
 
 camera.position.x = cameraSettings["start-position"].x;
 camera.position.y = cameraSettings["start-position"].y;
 camera.position.z = cameraSettings["start-position"].z;
-
 
 // Instantiate a loader
 const loader = new GLTFLoader();
 
 const canscale = 0.01;
 const car0scale = 0.05;
-const car1scale = 0.012;
+const car1scale = 0.005;
 const car2scale = 0.0045;
-const car3scale = 0.014;
+const car3scale = 0.006;
+
+var i;
+for (i = 0; i < 4; i++) {
+    var huis = new House(1);
+    huis.init(scene, new Vector3(8 * i, 0, -20));
+}
 
 const streetLamp = new StreetLamp();
-streetLamp.init(loader, scene, new Vector3(0, 0, -10));
+streetLamp.init(loader, scene, new Vector3(4, 0, -15));
+const streetLamp2 = new StreetLamp();
+streetLamp2.init(loader, scene, new Vector3(20, 0, -15));
 
 const can = new SodaCan(canscale);
-can.init(loader, scene, new Vector3(1, 0.1, 0));
-
-const car0 = new EntityBase("car0.gltf", car0scale, 4);
-car0.init(loader, scene, new Vector3(10, 3, 0));
-/*
+can.init(loader, scene, new Vector3(8, 0.1, -17));
 
 const car1 = new EntityBase("car1.gltf", car1scale, 0);
-car1.init(loader, scene, new Vector3(20, 0, 0));
+car1.init(loader, scene, new Vector3(-5, 0.1, -20));
+
+const car3 = new EntityBase("car3.gltf", car3scale, 1.75);
+car3.init(loader, scene, new Vector3(14, 0.76, -16.5));
+
+/*  Old cars, don't use them anymore
+const car0 = new EntityBase("car0.gltf", car0scale, 4);
+car0.init(loader, scene, new Vector3(10, 3, 0));
 
 const car2 = new EntityBase("car2.gltf", car2scale, 1.55);
 car2.init(loader, scene, new Vector3(30, 1.55, 0));
-
-const car3 = new EntityBase("car3.gltf", car3scale, 1.75);
-car3.init(loader, scene, new Vector3(40, 1.75, 0));
 */
 
 window.addEventListener("keydown", (e) => {
