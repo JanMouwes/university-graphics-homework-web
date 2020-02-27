@@ -1,5 +1,13 @@
 import EntityBase from "./entity-base";
-import {Color, CylinderGeometry, Mesh, MeshBasicMaterial, MeshPhongMaterial, PointLight, SphereGeometry} from "three";
+import {
+    Color,
+    CylinderGeometry,
+    Mesh,
+    MeshBasicMaterial,
+    MeshStandardMaterial,
+    PointLight,
+    SphereGeometry
+} from "three";
 
 export default class StreetLamp extends EntityBase {
 
@@ -8,10 +16,9 @@ export default class StreetLamp extends EntityBase {
     }
 
     init(loader, scene, initialPosition) {
-        const poleGeometry = new CylinderGeometry(.1, .1, 4, 60);
-        const poleMaterial = new MeshPhongMaterial({
-            color: new Color(0x909090),
-            shininess: 40
+        const poleGeometry = new CylinderGeometry(.02, .1, 4, 60);
+        const poleMaterial = new MeshStandardMaterial({
+            color: new Color(0xAAAAAA)
         });
         const pole = new Mesh(poleGeometry, poleMaterial);
         pole.position.set(initialPosition.x, 2 + initialPosition.y, initialPosition.z);
