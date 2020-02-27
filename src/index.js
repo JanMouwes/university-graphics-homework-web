@@ -60,7 +60,7 @@ var cube = new Mesh(geometry, material);
 cube.position.set(0, 0.5, 0);
 cube.castShadow = true;
 cube.receiveShadow = true;
-scene.add(cube);
+// scene.add(cube);
 
 camera.position.x = cameraSettings["start-position"].x;
 camera.position.y = cameraSettings["start-position"].y;
