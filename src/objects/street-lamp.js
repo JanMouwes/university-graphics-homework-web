@@ -5,7 +5,6 @@ import {
     CylinderGeometry,
     Mesh,
     MeshBasicMaterial,
-    MeshStandardMaterial,
     MeshPhongMaterial,
     PointLight,
     SphereGeometry
