@@ -140,7 +140,7 @@ car2.init(loader, scene, new Vector3(30, 1.55, 0));
 */
 
 window.addEventListener("keydown", (e) => {
-    const obj = can;
+    const obj = streetLamp;
 
     if (e.key === "ArrowDown") {
         obj.pos.y -= .05;
