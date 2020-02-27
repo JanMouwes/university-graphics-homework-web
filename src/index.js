@@ -24,6 +24,7 @@ import * as THREE from "three";
 import CameraControls from "./controls";
 import createSkybox from "./skybox";
 import SodaCan from "./objects/soda-can";
+import House from "./objects/house";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import EntityBase from "./objects/entity-base";
 import StreetLamp from "./objects/street-lamp";
@@ -50,8 +51,9 @@ var floor = new THREE.Mesh(geometry, material);
 floor.material.side = THREE.BackSide;
 floor.position.set(0, 0, 0);
 floor.rotation.x = Math.PI / 2;
-scene.add(floor);
-
+floor.receiveShadow = true;scene.add(floor);
+const huis = new House(1);
+huis.init(scene, new Vector3(0, 0, -20));
 var geometry = new BoxGeometry(1, 1, 1);
 var material = new MeshNormalMaterial();
 var cube = new Mesh(geometry, material);
@@ -59,30 +61,6 @@ cube.position.set(0, 0.5, 0);
 cube.castShadow = true;
 cube.receiveShadow = true;
 scene.add(cube);
-
-var geometry = new BoxGeometry(8, 5, 8);
-var texture = new THREE.TextureLoader().load('./src/resources/models/textures/BrickWall/Brick_Wall_017_basecolor.jpg');
-texture.repeat.set(4, 4);
-texture.wrapS = THREE.RepeatWrapping;
-texture.wrapT = THREE.RepeatWrapping;
-texture.repeat.set(4, 4);
-var material = new THREE.MeshBasicMaterial({map: texture});
-var huis = new Mesh(geometry, material);
-huis.position.set(0, 2.5, -20);
-scene.add(huis);
-
-var geometry = new ConeGeometry(7, 2.5, 4, 1, false, Math.PI / 4);
-var texture = new THREE.TextureLoader().load('./src/resources/models/textures/TerracottaRoof/Shingles_Terracotta_001_basecolor.jpg');
-texture.repeat.set(6, 6);
-texture.wrapS = THREE.RepeatWrapping;
-texture.wrapT = THREE.RepeatWrapping;
-texture.repeat.set(6, 6);
-var material = new THREE.MeshBasicMaterial({map: texture});
-var dak = new Mesh(geometry, material);
-dak.position.set(0, 6.3, -20);
-scene.add(dak);
-
-
 
 camera.position.x = cameraSettings["start-position"].x;
 camera.position.y = cameraSettings["start-position"].y;
@@ -162,8 +140,7 @@ window.addEventListener("keydown", (e) => {
 // keyLight.shadow.bias = 0.0001;
 // keyLight.shadow.mapSize.width = 2048;
 // keyLight.shadow.mapSize.height = 1024;
-
-//floor.receiveShadow = true;scene.add(keyLight);scene.add(cube);
+scene.add(keyLight);
 
 // Geen idee wat dit doet
 /*
