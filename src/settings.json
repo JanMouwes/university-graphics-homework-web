@@ -14,13 +14,13 @@
     "y-locked": true
   },
   "skybox": {
-    "path": "ForbiddenCity",
-    "x-positive": "posx.jpg",
-    "x-negative": "negx.jpg",
-    "y-positive": "posy.jpg",
-    "y-negative": "negy.jpg",
-    "z-positive": "posz.jpg",
-    "z-negative": "negz.jpg",
+    "path": "cloudy",
+    "x-positive": "bluecloud_xpos.jpg",
+    "x-negative": "bluecloud_xneg.jpg",
+    "y-positive": "bluecloud_ypos.jpg",
+    "y-negative": "bluecloud_yneg.jpg",
+    "z-positive": "bluecloud_zpos.jpg",
+    "z-negative": "bluecloud_zneg.jpg",
     "distance": {
       "width": 5000,
       "height": 5000,
