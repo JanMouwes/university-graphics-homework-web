@@ -52,7 +52,7 @@ export default class EntityBase {
         const onTextureLoaded = (gltf) => {
             gltf.scene.scale.set(scale, scale, scale);
 
-            gltf.scene.clone()
+            gltf.scene.clone();
 
             gltf.scene.position.set(
                 initialPosition.x,

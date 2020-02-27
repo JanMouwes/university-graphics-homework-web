@@ -22,6 +22,7 @@ import {
     TextureLoader,
     RepeatWrapping,
     PointLight,
+    Euler
 } from "three";
 import * as THREE from "three";
 import CameraControls from "./controls";
@@ -71,7 +72,7 @@ const huis = new House(1);
 huis.init(scene, new Vector3(0, 0, -20));
 
 var geometry = new BoxGeometry(1, 1, 1);
-var material = new MeshPhongMaterial( {
+var material = new MeshPhongMaterial({
     color: 0x000000,
     castShadow: true,
     receiveShadow: true,
@@ -116,9 +117,42 @@ streetLamp.init(loader, scene, new Vector3(0, 0, -10));
 const can = new SodaCan(canscale);
 can.init(loader, scene, new Vector3(1, 0.1, 0));
 
+
+const car3 = new EntityBase("car3.gltf", car3scale, 1.75);
+car3.init(loader, scene, new Vector3(40, 1.75, 0));
+
+/**
+ * @param {EntityBase} owner
+ * @param {Object3D} target
+ * @param {Vector3} offset
+ * @param {Euler} rotationOffset
+ * @returns {function(number)}
+ */
+const followObject = (owner, target, offset = new Vector3(), rotationOffset = new Euler()) => () => {
+    if (owner.object3d) {
+        owner.object3d.position.set(
+            target.position.x + offset.x,
+            target.position.y + offset.y,
+            target.position.z + offset.z,
+        );
+        owner.object3d.rotation.set(
+            rotationOffset.x,
+            target.rotation.y + rotationOffset.y,
+            rotationOffset.z
+        )
+    }
+    owner.pos.set(
+        target.position.x + offset.x,
+        target.position.y + offset.y,
+        target.position.z + offset.z,
+    );
+};
+
+car3.update = followObject(car3, camera, new Vector3(0, -1.8, 0), new Euler(0, -Math.PI/2, 0));
+
+/*
 const car0 = new EntityBase("car0.gltf", car0scale, 4);
 car0.init(loader, scene, new Vector3(10, 3, 0));
-/*
 
 const car1 = new EntityBase("car1.gltf", car1scale, 0);
 car1.init(loader, scene, new Vector3(20, 0, 0));
@@ -126,8 +160,7 @@ car1.init(loader, scene, new Vector3(20, 0, 0));
 const car2 = new EntityBase("car2.gltf", car2scale, 1.55);
 car2.init(loader, scene, new Vector3(30, 1.55, 0));
 
-const car3 = new EntityBase("car3.gltf", car3scale, 1.75);
-car3.init(loader, scene, new Vector3(40, 1.75, 0));
+
 */
 
 window.addEventListener("keydown", (e) => {
@@ -158,11 +191,13 @@ const movement = new CameraControls(window);
 movement.init(camera);
 
 /**
- * @type {SodaCan[]}
+ * @type {EntityBase[]}
  */
 const gameObjects = [];
 
 const GRAVITY = new Vector3(0, -9.81, 0);
+
+gameObjects.push(car3);
 
 const shootCan = () => {
     const newCan = new SodaCan(.01);
