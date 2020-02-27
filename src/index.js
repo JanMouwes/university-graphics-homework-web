@@ -94,7 +94,7 @@ const loader = new GLTFLoader();
 const canscale = 0.01;
 const car0scale = 0.05;
 const car1scale = 0.005;
-const car2scale = 0.0045;
+const car2scale = 0.003;
 const car3scale = 0.006;
 
 var i;
@@ -113,8 +113,8 @@ can.init(loader, scene, new Vector3(8, 0.1, -17));
 
 const car1 = new EntityBase("car1.gltf", car1scale, 0);
 car1.init(loader, scene, new Vector3(-5, 0.1, -20));
-
-
+const car2 = new EntityBase("car2.gltf", car2scale, 0);
+car2.init(loader, scene, new Vector3(-15, 1.2, -20));
 const bike = new EntityBase("car3.gltf", car3scale, 1.75);
 bike.init(loader, scene, new Vector3(40, 1.75, 0));
 
